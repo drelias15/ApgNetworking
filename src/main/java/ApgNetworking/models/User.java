@@ -1,14 +1,13 @@
 package ApgNetworking.models;
 
 import java.util.Collection;
-import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name="APG_User")
-public class ApgUser {
+@Table(name="APGUser")
+public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
@@ -32,16 +31,16 @@ public class ApgUser {
 	private Collection<Role> roles;
 
 	@OneToMany(mappedBy = "apguser", cascade = CascadeType.ALL)
-	public Collection<ApgPost> posts;
+	public Collection<Post> posts;
 
 	@OneToMany(mappedBy = "apguser", cascade = CascadeType.ALL)
-	public Collection<ApgUserCourse> userCourses;
+	public Collection<UserCourse> userCourses;
 
-	public ApgUser(){
+	public User(){
 
 	}
 
-	public ApgUser(String email, String firstName, String lastName, String username, String password, boolean enabled) {
+	public User(String email, String firstName, String lastName, String username, String password, boolean enabled) {
 		this.email = email;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -124,19 +123,19 @@ public class ApgUser {
 		this.roles.add(role);
 	}
 
-	public Collection<ApgPost> getPosts() {
+	public Collection<Post> getPosts() {
 		return posts;
 	}
 
-	public void setPosts(Collection<ApgPost> posts) {
+	public void setPosts(Collection<Post> posts) {
 		this.posts = posts;
 	}
 
-	public Collection<ApgUserCourse> getUserCourses() {
+	public Collection<UserCourse> getUserCourses() {
 		return userCourses;
 	}
 
-	public void setUserCourses(Collection<ApgUserCourse> userCourses) {
+	public void setUserCourses(Collection<UserCourse> userCourses) {
 		this.userCourses = userCourses;
 	}
 }

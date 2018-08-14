@@ -31,17 +31,16 @@
         <input class="form-control" type="text" th:field="*{github}"/>
         <label>Upload a profile picture(required)</label>
         <input type="file"  id="file" name="file"  />
-        <label> Select courses that you've taken</label>
-        <span class="text-danger border border-danger rounded" th:if="${#fields.hasErrors('courses')}" th:errors="*{courses}"></span>
-        <select class="custom-select" th:field="*{courses}" multiple>
+        <label> Select courses that you've taken or are currently enrolled in</label>
+        <select class="custom-select" th:field="*{userCourses}" multiple>
             <option th:each="scourse:${actCourses}" th:value="${scourse.id}"
                     th:name="${scourse.name}">
                 <p>Course Name: [[${scourse.name}]], Course Semester:
                     [[${scourse.semester}]]</p>
             </option>
         </select>
-        <button type="submit" value="submit" class="btn btn-outline-dark">submit</button>
-        <button type="reset" class="btn btn-outline-dark">Reset</button>
+        <button type="submit" value="Submit" class="btn btn-outline-dark"/>
+        <button type="reset" value="Reset" class="btn btn-outline-dark"/>
     </form>
 </div>
 <div th:replace="base ::footer"></div>

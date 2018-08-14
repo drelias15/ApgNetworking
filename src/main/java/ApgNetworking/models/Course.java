@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Size;
 
 @Entity
+@Table(name="APGCourse")
 public class Course {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +23,7 @@ public class Course {
 	private String crn;
 
 	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
-	public Collection<ApgUserCourse> userCourses;
+	public Collection<UserCourse> userCourses;
 
 	public long getId() {
 		return id;
@@ -57,11 +58,11 @@ public class Course {
 		this.crn = crn;
 	}
 
-	public Collection<ApgUserCourse> getUserCourses() {
+	public Collection<UserCourse> getUserCourses() {
 		return userCourses;
 	}
 
-	public void setUserCourses(Collection<ApgUserCourse> userCourses) {
+	public void setUserCourses(Collection<UserCourse> userCourses) {
 		this.userCourses = userCourses;
 	}
 }

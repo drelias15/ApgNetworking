@@ -26,19 +26,19 @@ public class UserService {
         this.userRepository=userRepository;
     }
 
-    public ApgUser findByUsername(String username)
+    public User findByUsername(String username)
     {
         return userRepository.findByUsername(username);
     }
 
-    public void saveAdmin(ApgUser user)
+    public void saveAdmin(User user)
     {
         user.setRoles(Arrays.asList(roleRepository.findByRole("Admin")));
         user.setEnabled(true);
         userRepository.save(user);
     }
 
-    public void saveStudent(ApgUser user)
+    public void saveStudent(User user)
     {
         List list = new ArrayList(Arrays.asList(roleRepository.findByRole("Student")));
         user.setRoles(list);
@@ -47,7 +47,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void saveInstructor(ApgUser user)
+    public void saveInstructor(User user)
     {
         user.setRoles(Arrays.asList(roleRepository.findByRole("Instructor")));
         user.setEnabled(true);

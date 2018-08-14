@@ -5,7 +5,8 @@ import javax.validation.constraints.Size;
 
 
 @Entity
-public class ApgPost {
+@Table(name="APGPost")
+public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -17,8 +18,8 @@ public class ApgPost {
     private String content;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "apguser_id")
-    private ApgUser apguser;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public long getId() {
         return id;
@@ -52,11 +53,11 @@ public class ApgPost {
         this.content = content;
     }
 
-    public ApgUser getApguser() {
-        return apguser;
+    public User getUser() {
+        return user;
     }
 
-    public void setApguser(ApgUser apguser) {
-        this.apguser = apguser;
+    public void setUser(User user) {
+        this.user = user;
     }
 }

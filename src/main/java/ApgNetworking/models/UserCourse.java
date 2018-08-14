@@ -3,16 +3,15 @@ package ApgNetworking.models;
 import javax.persistence.*;
 
 @Entity
-public class ApgUserCourse {
+@Table(name="APGUserCourse")
+public class UserCourse {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "apguser_id")
-    private ApgUser apguser;
+    private User user;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "course_id")
@@ -26,12 +25,12 @@ public class ApgUserCourse {
         this.id = id;
     }
 
-    public ApgUser getApguser() {
-        return apguser;
+    public User getUser() {
+        return user;
     }
 
-    public void setApguser(ApgUser apguser) {
-        this.apguser = apguser;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Course getCourse() {

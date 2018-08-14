@@ -1,14 +1,14 @@
 package ApgNetworking.controllers;
 
 import ApgNetworking.configurations.CloudinaryConfig;
-import ApgNetworking.models.ApgPost;
-import ApgNetworking.models.ApgUser;
+import ApgNetworking.models.Post;
+import ApgNetworking.models.User;
 import ApgNetworking.models.Course;
 import ApgNetworking.repositories.CourseRepository;
 import ApgNetworking.repositories.PostRepository;
 import ApgNetworking.repositories.RoleRepository;
 import ApgNetworking.repositories.UserRepository;
-import ApgNetworking.services.UserService;
+import ApgNetworking.models.UserService;
 import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -18,10 +18,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import javax.naming.AuthenticationException;
+
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Map;
 
 @Controller
@@ -40,6 +39,8 @@ public class MainController {
 	private PasswordEncoder passwordEncoder;
 	@Autowired
 	private PostRepository postRepository;
+
+
 	@RequestMapping("/")
 	public String index() {
 		return"index";
@@ -50,38 +51,36 @@ public class MainController {
 		return "login";
 	}
 
-	@GetMapping("/register")
-	public String register(Model model) {
-		model.addAttribute("apgUser", new ApgUser());
+	@GetMapping("/userinfo")
+	public String userinfo(Model model) {
+		model.addAttribute("apgUser", new User());
 		model.addAttribute("actCourses", courserepo.findAll());
-		return "register";
+		return "userinfo";
 	}
 
-	@PostMapping("/register")
-	public String displayform(@Valid@ModelAttribute("apgUser")ApgUser apgUser, BindingResult result, Model model,@RequestParam("file")MultipartFile file) {
+	@PostMapping("/userinfo")
+	public String displayform(@Valid@ModelAttribute("apgUser")User apgUser, BindingResult result, Model model,@RequestParam("file")MultipartFile file) {
 		if (result.hasErrors()||file.isEmpty()) {
 			model.addAttribute("actCourses", courserepo.findAll());
-			return "register";
+			return "userinfo";
 		} else {
 			try {
 				Map uploadResult =  cloudc.upload(file.getBytes(),
 						ObjectUtils.asMap("resourcetype", "auto"));
 				apgUser.setPicUrl(uploadResult.get("url").toString());
-				String thePassword = apgUser.getPassword();
-				apgUser.setPassword(passwordEncoder.encode(thePassword));
-				apgUser.setEnabled(true);
-				apgUser.setRoles(Arrays.asList(roleRepo.findByRole("STUDENT")));
+
 				if(!apgUser.getLinkedIn().startsWith("https://")){
 					apgUser.setLinkedIn("https://"+apgUser.getLinkedIn());
 				}
 				if(!apgUser.getGithub().startsWith("https://")){
 					apgUser.setGithub("https://"+apgUser.getGithub());
 				}
-					userRepo.save(apgUser);
+
+				userService.saveStudent(apgUser);
 			} catch (IOException e){
 				e.printStackTrace();
 				model.addAttribute("actCourses", courserepo.findAll());
-				return "redirect:/register";
+				return "redirect:/userinfo";
 			}
 			return "login";
 		}
@@ -91,52 +90,52 @@ public class MainController {
 		model.addAttribute("currUser",userRepo.findByUsername(authentication.getName()));
 		return "profilepage";
 	}
-	//What handles the adding a course
-	@GetMapping("/addcourse")
-	public String addcourse(Model model) {
+
+	@GetMapping("/courseform")
+	public String courseform(Model model) {
 		model.addAttribute("course", new Course());
-		return "addcourse";
+		return "courseform";
 	}
 
-	@PostMapping("/addcourse")
+	@PostMapping("/courseform")
 	public String showCourse(@Valid @ModelAttribute("course") Course course, BindingResult result, Model model) {
 		if (result.hasErrors()) {
-			return "addcourse";
+			return "courseform";
 		} else {
 
 			courserepo.save(course);
 			model.addAttribute("allCourses", courserepo.findAll());
-			return "roster";
+			return "courses";
 		}
 
 	}
-	@RequestMapping("/roster")
-		public String roster(Model model){
+	@RequestMapping("/courses")
+		public String courses(Model model){
 		model.addAttribute("allCourses", courserepo.findAll());
-		return "roster";
+		return "courses";
 	}
-	@GetMapping("/makepost")
-	public String makePost(Model model){
-		model.addAttribute("post", new ApgPost());
-		return "makepost";
+	@GetMapping("/postform")
+	public String postform(Model model){
+		model.addAttribute("post", new Post());
+		return "postform";
 	}
-	@PostMapping("/makepost")
-	public String savePost(@Valid @ModelAttribute("post") ApgPost post, BindingResult result, Model model,Authentication authentication){
+	@PostMapping("/postform")
+	public String savePost(@Valid @ModelAttribute("post") Post post, BindingResult result, Model model, Authentication authentication){
 		if (result.hasErrors()) {
-			return "makepost";
+			return "postform";
 		} else {
-			post.setApguser(userRepo.findByUsername(authentication.getName()));
+			post.setUser(userRepo.findByUsername(authentication.getName()));
 			if(!post.getLink().startsWith("https://")){
 				post.setLink("https://"+post.getLink());
 			}
 			postRepository.save(post);
 			model.addAttribute("posts", postRepository.findAll());
-			return "newsfeed";
+			return "posts";
 		}
 	}
-	@RequestMapping("/newsfeed")
-	public String newsFeed(Model model){
+	@RequestMapping("/posts")
+	public String posts(Model model){
 		model.addAttribute("posts", postRepository.findAll());
-		return "newsfeed";
+		return "posts";
 	}
 }
