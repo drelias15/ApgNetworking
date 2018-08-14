@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org" xmlns:sec="www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Roster</title>
+    <th:block th:insert="base :: header"></th:block>
+</head>
+<body>
+<div th:replace="base :: navlinks"></div>
+<div class="container p-2">
+
+
+    <div class="border border-dark p-2 justify-content-center" th:each="actCourse:${allCourses}">
+        <div class="row p-2">
+            <h3>[[${actCourse.name}]] [[${actCourse.semester}]]</h3>
+        </div>
+        <div class="row">
+            <div class="col-sm-4" th:each="student:${actCourse.users}">
+                <div class="card p-2" style="width: 13rem;">
+                    <img class="card-img-top" th:src="${student.picUrl}" width="50px"
+                         height="60px" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">[[${student.username}]]</h5>
+                        <p class="card-text">[[${student.firstName}]] [[${student.lastName}]]</p>
+                        <p>Email : [[${student.email}]]</p>
+                        <a th:href="@{${student.linkedIn}}" class="btn btn-primary">LinkedIn</a>
+                        <a th:href="@{${student.github}}" class="btn btn-primary">GitHub</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<div th:replace="base ::footer"></div>
+</body>
+</html>

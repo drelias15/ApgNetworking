@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>News Feed</title>
+    <th:block th:insert="base :: header"></th:block>
+
+</head>
+<body>
+<div th:replace="base :: navlinks"></div>
+<div class="container">
+    <div class="row">
+    <div class="border border-dark p-2" th:each="post:${posts}">
+            <div class="col-md-4">
+                <div class="card" style="width: 12rem;">
+                    <img class="card-img-top" th:src="${post.apguser.picUrl}" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">[[${post.apguser.username}]]</h5>
+                        <p class="card-text">[[${post.content}]]</p>
+                        <a th:href="@{${post.link}}" class="btn btn-primary">[[${post.link}]]</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<div th:replace="base ::footer"></div>
+</body>
+</html>
