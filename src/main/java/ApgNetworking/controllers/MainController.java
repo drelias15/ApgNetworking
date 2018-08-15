@@ -53,33 +53,33 @@ public class MainController {
 
 	@GetMapping("/userinfo")
 	public String userinfo(Model model) {
-		model.addAttribute("apgUser", new User());
-		model.addAttribute("actCourses", courserepo.findAll());
+		model.addAttribute("user", new User());
+		model.addAttribute("courses", courserepo.findAll());
 		return "userinfo";
 	}
 
 	@PostMapping("/userinfo")
-	public String displayform(@Valid@ModelAttribute("apgUser")User apgUser, BindingResult result, Model model,@RequestParam("file")MultipartFile file) {
+	public String displayform(@Valid@ModelAttribute("user")User user, BindingResult result, Model model,@RequestParam("file")MultipartFile file) {
 		if (result.hasErrors()||file.isEmpty()) {
-			model.addAttribute("actCourses", courserepo.findAll());
+			model.addAttribute("courses", courserepo.findAll());
 			return "userinfo";
 		} else {
 			try {
 				Map uploadResult =  cloudc.upload(file.getBytes(),
 						ObjectUtils.asMap("resourcetype", "auto"));
-				apgUser.setPicUrl(uploadResult.get("url").toString());
+				user.setPicUrl(uploadResult.get("url").toString());
 
-				if(!apgUser.getLinkedIn().startsWith("https://")){
-					apgUser.setLinkedIn("https://"+apgUser.getLinkedIn());
+				if(!user.getLinkedIn().startsWith("https://")){
+					user.setLinkedIn("https://"+user.getLinkedIn());
 				}
-				if(!apgUser.getGithub().startsWith("https://")){
-					apgUser.setGithub("https://"+apgUser.getGithub());
+				if(!user.getGithub().startsWith("https://")){
+					user.setGithub("https://"+user.getGithub());
 				}
 
-				userService.saveStudent(apgUser);
+				userService.saveStudent(user);
 			} catch (IOException e){
 				e.printStackTrace();
-				model.addAttribute("actCourses", courserepo.findAll());
+				model.addAttribute("courses", courserepo.findAll());
 				return "redirect:/userinfo";
 			}
 			return "login";
@@ -104,14 +104,14 @@ public class MainController {
 		} else {
 
 			courserepo.save(course);
-			model.addAttribute("allCourses", courserepo.findAll());
+			model.addAttribute("courses", courserepo.findAll());
 			return "courses";
 		}
 
 	}
 	@RequestMapping("/courses")
 		public String courses(Model model){
-		model.addAttribute("allCourses", courserepo.findAll());
+		model.addAttribute("courses", courserepo.findAll());
 		return "courses";
 	}
 	@GetMapping("/postform")

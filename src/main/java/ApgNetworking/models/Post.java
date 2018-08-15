@@ -14,12 +14,25 @@ public class Post {
     private String title;
     private String link;
 
-    @Size(min=0, max=140)
+    @Size(min=3, max=140)
     private String content;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "course_id")
+    private Course course;
+
+    public Post() {
+    }
+
+    public Post(String title, String link, @Size(min = 3, max = 140) String content) {
+        this.title = title;
+        this.link = link;
+        this.content = content;
+    }
 
     public long getId() {
         return id;
@@ -59,5 +72,13 @@ public class Post {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
     }
 }

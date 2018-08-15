@@ -1,3 +1,8 @@
 .card p-4 {
     display: inline-block;
 }
+
+.profile-thumbnail{
+    height: 30px;
+    width: 30px;
+}

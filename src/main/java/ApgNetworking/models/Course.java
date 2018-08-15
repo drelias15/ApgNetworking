@@ -1,5 +1,7 @@
 package ApgNetworking.models;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
+
 import java.util.Collection;
 import java.util.Set;
 
@@ -19,35 +21,48 @@ public class Course {
 	@Size(min=1, max=20)
 	private String semester;
 
-	private boolean active;
 	private String crn;
+	private String description;
+	private Boolean active;
 
 	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
 	public Collection<UserCourse> userCourses;
 
+	public Course() {
+	}
+
+	public Course(@Size(min = 1, max = 20) String name, @Size(min = 1, max =
+			20) String semester, String crn, String description, Boolean
+			active) {
+		this.name = name;
+		this.semester = semester;
+		this.crn = crn;
+		this.description = description;
+		this.active = active;
+	}
+
 	public long getId() {
 		return id;
 	}
+
 	public void setId(long id) {
 		this.id = id;
 	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public String getSemester() {
 		return semester;
 	}
+
 	public void setSemester(String semester) {
 		this.semester = semester;
-	}
-	public boolean isActive() {
-		return active;
-	}
-	public void setActive(boolean active) {
-		this.active = active;
 	}
 
 	public String getCrn() {
@@ -56,6 +71,22 @@ public class Course {
 
 	public void setCrn(String crn) {
 		this.crn = crn;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
 	}
 
 	public Collection<UserCourse> getUserCourses() {

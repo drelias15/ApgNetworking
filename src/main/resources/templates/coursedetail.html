@@ -2,37 +2,70 @@
 <html lang="en"  xmlns:th="http://www.thymeleaf.org" xmlns:sec="www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Roster</title>
+    <title>Course Information</title>
     <th:block th:insert="base :: header"></th:block>
 </head>
 <body>
-<div th:replace="base :: navlinks"></div>
-<div class="container p-2">
+    <div th:replace="base :: navlinks"></div>
 
+        <div class="container">
 
-    <div class="border border-dark p-2 justify-content-center" th:each="actCourse:${allCourses}">
-        <div class="row p-2">
-            <h3>[[${actCourse.name}]] [[${actCourse.semester}]]</h3>
-        </div>
-        <div class="row">
-            <div class="col-sm-4" th:each="student:${actCourse.users}">
-                <div class="card p-2" style="width: 13rem;">
-                    <img class="card-img-top" th:src="${student.picUrl}" width="50px"
-                         height="60px" alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">[[${student.username}]]</h5>
-                        <p class="card-text">[[${student.firstName}]] [[${student.lastName}]]</p>
-                        <p>Email : [[${student.email}]]</p>
-                        <a th:href="@{${student.linkedIn}}" class="btn btn-primary">LinkedIn</a>
-                        <a th:href="@{${student.github}}" class="btn btn-primary">GitHub</a>
+            <h3 th:text="${course.crn + ' ' + course.name}"></h3>
+            <strong>Semester: </strong><span th:text="${course.semester}"></span>
+            <p><strong>Course Description: </strong><span th:text="${course.description}"></span></p>
+
+            <!--List Instructors-->
+            <div th:each="instructor : ${instructors}">
+                <div class="col-sm-3">
+                    <div class="card text-center">
+                        <div class="card-header text-center"><span
+                                th:text="${instructor.firstName + ' ' +  instructor.lastName}"></span></div>
+                        <div class="card-body">
+                            <div th:if="${instructor.picUrl != ''}">
+                                <img class="card-img-top user-img" th:src="${instructor.picUrl}" alt="user profile picture">
+                            </div>
+                            <a class="card-link btn btn-warning"
+                               th:href="@{/detail/{id}(id=${instructor.id})}">View More</a>
+                        </div>
                     </div>
-                </div>
+                </div><!--end div class col-->
+            </div><!--end div class for:each-->
+
+            <!--List Students-->
+            <div th:each="student : ${students}">
+                <div class="col-sm-3">
+                    <div class="card text-center">
+                        <div class="card-header text-center"><span
+                                th:text="${student.firstName + ' ' +  student.lastName}"></span></div>
+                        <div class="card-body">
+                            <div th:if="${student.picUrl != ''}">
+                                <img class="card-img-top user-img" th:src="${student.picUrl}" alt="user profile picture">
+                            </div>
+                            <a class="card-link btn btn-warning"
+                               th:href="@{/detail/{id}(id=${student.id})}">View More</a>
+                        </div>
+                    </div>
+                </div><!--end div class col-->
+            </div><!--end div class for:each-->
+
+            <!--Add New Post-->
+
+            <!--Posts Preview-->
+            <div th:each="post : ${posts}">
+                <div><strong><span th:text="${post.title}"></span></strong></div>
+                <div><span th:text="${post.content}"></span></div>
+                <img class="profile-thumbnail" src="@{${post.user.picUrl}}" alt="thumbnail"/>
+                <a class="card-link btn btn-warning"
+                   th:href="@{/detail/{id}(id=${post.user.id})}"><span th:text="${post.user.username}"></span></a>
             </div>
-        </div>
 
-    </div>
+            <!--View All Course Posts-->
+            <p>
+                <a class="card-link btn btn-warning" th:href="@{/getCoursePosts/{id}(id=${course.id})}">View More Posts</a>
+            </p>
 
-</div>
-<div th:replace="base ::footer"></div>
+        </div><!--end div container-->
+
+    <div th:replace="base ::footer"></div>
 </body>
 </html>

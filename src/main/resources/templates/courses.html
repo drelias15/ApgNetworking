@@ -1,10 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="www.thymeleaf.org/extras/spring-security">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="ISO-8859-1"/>
+    <title>Courses</title>
+    <th:block th:insert="base :: header"></th:block>
 </head>
 <body>
+    <div th:replace="base :: navlinks"></div>
 
+    <div class="container">
+
+        <h2>Courses</h2>
+
+        <a class="btn btn-warning" href="/courses">All Courses</a>
+        <a class="btn btn-warning" href="/currentCourses">Current Courses</a>
+        <a class="btn btn-warning" href="/pastCourses">Past Courses</a>
+
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>CRN</th>
+                    <th>Course Name</th>
+                    <th>Semester</th>
+                    <th sec:authorize="hasAuthority('Admin')"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="course : ${courses}">
+                    <td><span th:text="${course.crn}"></span></td>
+                    <td><span th:text="${course.name}"></span></td>
+                    <td><span th:text="${course.semester}"></span></td>
+                    <td sec:authorize="hasAuthority('Admin')">
+                        <div th:if="${course.active == true}">
+                            <a class="btn btn-primary" th:href
+                                    ="@{/disableCourse/{id}(id=${course.id})}">
+                                Disable</a>
+                        </div>
+                        <div th:if="${course.active == false}">
+                            <a class="btn btn-primary" th:href
+                                    ="@{/enableCourse/{id}(id=${course.id})}">
+                                Enable</a>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    <div th:replace="base ::footer"></div>
 </body>
 </html>

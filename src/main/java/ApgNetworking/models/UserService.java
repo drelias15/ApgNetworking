@@ -3,6 +3,8 @@ package ApgNetworking.models;
 import ApgNetworking.repositories.RoleRepository;
 import ApgNetworking.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +31,14 @@ public class UserService {
     public User findByUsername(String username)
     {
         return userRepository.findByUsername(username);
+    }
+
+    // Returns the currently logged in User object
+    public User getCurrentUser(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentusername = authentication.getName();
+        User user = userRepository.findByUsername(currentusername);
+        return user;
     }
 
     public void saveAdmin(User user)

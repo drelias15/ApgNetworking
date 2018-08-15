@@ -30,22 +30,25 @@ public class User {
 			inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Collection<Role> roles;
 
-	@OneToMany(mappedBy = "apguser", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	public Collection<Post> posts;
 
-	@OneToMany(mappedBy = "apguser", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	public Collection<UserCourse> userCourses;
 
 	public User(){
 
 	}
 
-	public User(String email, String firstName, String lastName, String username, String password, boolean enabled) {
+	public User(@Email String email, @Size(min = 1, max = 20) String firstName, @Size(min = 1, max = 20) String lastName, @Size(min = 1, max = 20) String username, String password, String picUrl, String linkedIn, String github, boolean enabled) {
 		this.email = email;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.username = username;
 		this.password = password;
+		this.picUrl = picUrl;
+		this.linkedIn = linkedIn;
+		this.github = github;
 		this.enabled = enabled;
 	}
 

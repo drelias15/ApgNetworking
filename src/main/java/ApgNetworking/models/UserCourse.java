@@ -17,6 +17,14 @@ public class UserCourse {
     @JoinColumn(name = "course_id")
     private Course course;
 
+    public UserCourse() {
+    }
+
+    public UserCourse(User user, Course course) {
+        this.user = user;
+        this.course = course;
+    }
+
     public long getId() {
         return id;
     }
