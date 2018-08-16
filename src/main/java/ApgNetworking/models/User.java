@@ -13,12 +13,13 @@ public class User {
 	private long id;
 	@Email
 	private String email;
-	@Size(min=1, max=20)
+	@Size(min=3)
 	private String firstName;
-	@Size(min=1, max=20)
+	@Size(min=3)
 	private String lastName;
-	@Size(min=1, max=20)
+	@Size(min=3)
 	private String username;
+	@Size(min=3)
 	private String password;
 	private String picUrl;
 	private String linkedIn;

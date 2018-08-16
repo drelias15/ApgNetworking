@@ -1,10 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="www.thymeleaf.org/extras/spring-security">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Inbox</title>
+    <th:block th:insert="base :: header"></th:block>
 </head>
 <body>
+    <div th:replace="base :: navlinks"></div>
 
+    <div class="container">
+
+    </div>
+
+    <div th:replace="base ::footer"></div>
 </body>
 </html>

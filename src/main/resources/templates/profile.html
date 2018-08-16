@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>User Profile</title>
+    <th:block th:insert="base :: header"></th:block>
+</head>
+<body>
+    <div th:replace="base :: navlinks"></div>
+
+    <div class="container">
+        <div class="profile row">
+            <div class="profile-photo col-lg-2">
+                <img th:src="${user.picUrl}" alt="user profile pic"/>
+            </div>
+            <div class="profile-info col-lg-2">
+                <p>
+                    <strong>Name:</strong>
+                    <span th:text="${user.firstName}"></span>
+                </p>
+                <p>
+                    <strong>Email:</strong>
+                    <a th:href="${'mailto:' + user.email}">
+                        <span th:text="${user.email}"></span>
+                    </a>
+                </p>
+                <p>
+                    <strong>LinkedIn:</strong>
+                    <a th:href="@{${user.linkedIn}}" target="_blank">
+                        <span th:text="${user.linkedIn}"></span>
+                    </a>
+                </p>
+                <p>
+                    <strong>GitHub:</strong>
+                    <a th:href="@{${user.github}}" target="_blank">
+                        <span th:text="${user.github}"></span>
+                    </a>
+                </p>
+            </div>
+        </div><!--end div profile-->
+    </div><!--end div container-->
+
+    <div th:replace="base ::footer"></div>
+</body>
+</html>

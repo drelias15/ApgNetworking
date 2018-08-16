@@ -1,48 +1,81 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="www.thymeleaf.org/extras/spring-security">
 <head>
-    <meta charset="UTF-8"/>
     <title>Register</title>
     <th:block th:insert="base :: header"></th:block>
-
 </head>
 <body>
-<div th:replace="base :: navlinks"></div>
-<div class="container">
-    <form method="post" action="#" th:action="@{/register}" th:object="${apgUser}" enctype="multipart/form-data">
-        <label>Email</label>
-        <input class="form-control" type="text" th:field="*{email}"/>
-        <span class="text-danger border border-danger rounded" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
-        <label >First Name</label>
-        <input class="form-control" type="text" th:field="*{firstName}"/>
-        <span class="text-danger border border-danger rounded" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
-        <label>Last Name</label>
-        <input class="form-control" type="text" th:field="*{lastName}"/>
-        <span class="text-danger border border-danger rounded" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
-        <label>User Name</label>
-        <input class="form-control" type="text" th:field="*{username}"/>
-        <span class="text-danger border border-danger rounded" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
-        <label>Password</label>
-        <input class="form-control" type="password" th:field="*{password}"/>
-        <span class="text-danger border border-danger rounded" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
-        <label> LinkedIn Url</label>
-        <input class="form-control" type="text" th:field="*{linkedIn}"/>
-        <label>Github Url</label>
-        <input class="form-control" type="text" th:field="*{github}"/>
-        <label>Upload a profile picture(required)</label>
-        <input type="file"  id="file" name="file"  />
-        <label> Select courses that you've taken or are currently enrolled in</label>
-        <select class="custom-select" th:field="*{userCourses}" multiple>
-            <option th:each="scourse:${actCourses}" th:value="${scourse.id}"
-                    th:name="${scourse.name}">
-                <p>Course Name: [[${scourse.name}]], Course Semester:
-                    [[${scourse.semester}]]</p>
-            </option>
-        </select>
-        <button type="submit" value="Submit" class="btn btn-outline-dark"/>
-        <button type="reset" value="Reset" class="btn btn-outline-dark"/>
-    </form>
-</div>
-<div th:replace="base ::footer"></div>
+    <div th:replace="base :: navlinks"> </div>
+
+    <div class="container">
+        <form method="post" action="#" th:action="@{/processUser}" th:object="${user}"
+              enctype="multipart/form-data">
+
+            <input type="hidden" th:field="*{id}">
+
+            <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input type="text" class="form-control" th:field="*{firstName}" id="firstName">
+                <span class="text-danger border border-danger rounded" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <input type="text" class="form-control" th:field="*{lastName}" id="lastName">
+                <span class="text-danger border border-danger rounded" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" th:field="*{email}" id="email">
+                <span class="text-danger border border-danger rounded" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" class="form-control" th:field="*{username}"
+                       id="username">
+                <span class="text-danger border border-danger rounded" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="text" class="form-control" th:field="*{password}"
+                       id="password">
+                <span class="text-danger border border-danger rounded" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="linkedIn">LinkedIn</label>
+                <input type="text" class="form-control" th:field="*{linkedIn}"
+                       id="linkedIn">
+                <span class="text-danger border border-danger rounded" th:if="${#fields.hasErrors('linkedIn')}" th:errors="*{linkedIn}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="github">GitHub</label>
+                <input type="text" class="form-control" th:field="*{github}"
+                       id="github">
+                <span class="text-danger border border-danger rounded" th:if="${#fields.hasErrors('github')}" th:errors="*{github}"></span>
+            </div>
+
+            <label>Upload a profile picture(required)</label>
+            <input type="file"  id="file" name="file"  />
+
+            <label> Select courses that you've taken or are currently enrolled in</label>
+            <select class="custom-select" th:field="*{userCourses}" multiple>
+                <option th:each="course : ${courses}"
+                        th:value="${course.id}"
+                        th:name="${course.name}">
+                    <p>Course Name: [[${course.name}]], Course Semester:
+                        [[${course.semester}]]</p>
+                </option>
+            </select>
+            <button type="submit" value="Submit" class="btn btn-outline-dark"/>
+            <button type="reset" value="Reset" class="btn btn-outline-dark"/>
+        </form>
+    </div>
+
+    <div th:replace="base ::footer"></div>
 </body>
 </html>

@@ -1,7 +1,7 @@
 package ApgNetworking.services;
 
 
-import ApgNetworking.models.ApgUser;
+import ApgNetworking.models.User;
 import ApgNetworking.models.Role;
 import ApgNetworking.repositories.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
@@ -28,7 +28,7 @@ public class SSUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         try {
-            ApgUser user = userRepository.findByUsername(username);
+            User user = userRepository.findByUsername(username);
             if (user == null) {
                 System.out.println("user not found with the provided username " + user.toString());
                 return null;
@@ -42,7 +42,7 @@ public class SSUserDetailsService implements UserDetailsService {
         }
     }
 
-    private Set<GrantedAuthority> getAuthorities(ApgUser user){
+    private Set<GrantedAuthority> getAuthorities(User user){
         Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
         for(Role role : user.getRoles()) {
             GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(role.getRole());

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="www.thymeleaf.org/extras/spring-security">
 <head>
-    <meta charset="ISO-8859-1"/>
     <title>Courses</title>
     <th:block th:insert="base :: header"></th:block>
 </head>
@@ -28,7 +27,11 @@
             <tbody>
                 <tr th:each="course : ${courses}">
                     <td><span th:text="${course.crn}"></span></td>
-                    <td><span th:text="${course.name}"></span></td>
+                    <td>
+                        <a href="@{/coursedetail/{id}(id=${course.id})}">
+                            <span th:text="${course.name}"></span>
+                        </a>
+                    </td>
                     <td><span th:text="${course.semester}"></span></td>
                     <td sec:authorize="hasAuthority('Admin')">
                         <div th:if="${course.active == true}">

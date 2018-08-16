@@ -6,3 +6,11 @@
     height: 30px;
     width: 30px;
 }
+
+.profile {
+    border: 2px solid #5a6268;
+}
+
+.profile-info {
+    padding: 15px;
+}

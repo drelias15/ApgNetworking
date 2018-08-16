@@ -1,30 +1,40 @@
 <!DOCTYPE html>
 <html lang="en"  xmlns:th="http://www.thymeleaf.org" xmlns:sec="www.thymeleaf.org/extras/spring-security">
 <head>
-    <meta charset="UTF-8">
     <title>Add Course</title >
     <th:block th:insert="base :: header"></th:block>
-
 </head>
 <body>
-<div th:replace="base :: navlinks"></div>
-<div class="container">
-    <form method="post" action="#" th:action="@{/addcourse}" th:object="${course}">
-        <label>Course Name</label>
-        <input class="form-control" type="text" th:field="*{name}"/>
-        <span class="text-danger border border-danger rounded" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+    <div th:replace="base :: navlinks"></div>
 
-        <label>Semester </label>
-        <input class="form-control" type="text" th:field="*{semester}"/>
-        <span class="text-danger border border-danger rounded" th:if="${#fields.hasErrors('semester')}" th:errors="*{semester}"></span>
-        <label>Crn </label>
-        <input class="form-control" type="text" th:field="*{crn}"/>
-        <span class="text-danger border border-danger rounded" th:if="${#fields.hasErrors('crn')}" th:errors="*{crn}"></span>
-        <button type="submit" value="submit" class="btn btn-outline-dark">submit</button>
-        <button type="reset" class="btn btn-outline-dark">Reset</button>
-    </form>
+    <div class="container">
+        <form method="post" action="#" th:action="@{/addcourse}" th:object="${course}">
+            <input type="hidden" th:field="*{id}">
 
-</div>
-<div th:replace="base ::footer"></div>
+            <div class="form-group">
+                <label for="name">Course Name</label>
+                <input type="text" class="form-control" th:field="*{name}" id="name">
+                <span class="text-danger border border-danger rounded" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+            </div>
+            <div class="form-group">
+                <label for="crn">Course Number (CRN)</label>
+                <input type="text" class="form-control" th:field="*{crn}" id="crn">
+            </div>
+            <div class="form-group">
+                <label for="semester">Semester</label>
+                <input type="text" class="form-control" th:field="*{semester}" id="semester">
+                <span class="text-danger border border-danger rounded" th:if="${#fields.hasErrors('semester')}" th:errors="*{semester}"></span>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <input type="text" class="form-control" th:field="*{description}" id="description">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="reset" class="btn btn-warning">Reset</button>
+        </form>
+
+    </div>
+
+    <div th:replace="base ::footer"></div>
 </body>
 </html>

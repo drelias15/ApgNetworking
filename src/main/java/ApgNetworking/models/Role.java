@@ -13,7 +13,7 @@ public class Role {
 	private long id;
 	private String role;
 	@ManyToMany(mappedBy = "roles",fetch = FetchType.LAZY)
-	private Collection<ApgUser> users;
+	private Collection<User> users;
 	public Role(String role) {
 		this.role = role;
 	}
@@ -25,10 +25,10 @@ public class Role {
 	public void setId(long id) {
 		this.id = id;
 	}
-	public Collection<ApgUser> getUsers() {
+	public Collection<User> getUsers() {
 		return users;
 	}
-	public void setUsers(Collection<ApgUser> users) {
+	public void setUsers(Collection<User> users) {
 		this.users = users;
 	}
 	public String getRole() {

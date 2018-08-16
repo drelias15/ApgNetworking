@@ -1,31 +1,45 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="www.thymeleaf.org/extras/spring-security">
 <head>
-    <meta charset="UTF-8">
     <title>News Feed</title>
     <th:block th:insert="base :: header"></th:block>
-
 </head>
 <body>
-<div th:replace="base :: navlinks"></div>
-<div class="container">
-    <div class="row">
-    <div class="border border-dark p-2" th:each="post:${posts}">
-            <div class="col-md-4">
-                <div class="card" style="width: 12rem;">
-                    <img class="card-img-top" th:src="${post.apguser.picUrl}" alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">[[${post.apguser.username}]]</h5>
-                        <p class="card-text">[[${post.content}]]</p>
-                        <a th:href="@{${post.link}}" class="btn btn-primary">[[${post.link}]]</a>
-                    </div>
-                </div>
-            </div>
+    <div th:replace="base :: navlinks"></div>
 
-        </div>
+    <div class="container">
+        <h2>Posts for <span th:text="${course.name}"></span></h2>
+
+        <table class="table table-hover">
+            <tbody>
+                <tr th:each="post : ${posts}">
+                    <td>
+                        <div th:if="${post.title != ''}">
+                            <strong><span
+                                    th:text="${post.title}"></span></strong>
+                        </div>
+                        <div th:if="${post.link != ''}">
+                            <a th:href="@{${post.link}" target="_blank">
+                                <span th:text="${post.link}"></span>
+                            </a>
+                        </div>
+                        <div>
+                            <span th:text="${post.content}"></span>
+                        </div>
+                        <div>
+                            <img class="profile-thumbnail" src="@{${post.user.picUrl}}"
+                                 alt="profile-thumbnail"/>
+                            <a class="card-link btn btn-warning"
+                               th:href="@{/profile/{id}(id=${post.user.id})}"><span th:text="${post.user.username}"></span></a>
+                            <span
+                                    th:text="${#dates.format(post.posteddate, 'dd MMM yyyy')}"></span>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
-</div>
-<div th:replace="base ::footer"></div>
+    <div th:replace="base ::footer"></div>
 </body>
 </html>

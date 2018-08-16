@@ -99,7 +99,7 @@ public class DataLoader implements CommandLineRunner{
     private void addCourses(){
         Collection<UserCourse> userCourses = new ArrayList<>();
 
-        Course course = new Course("Java", "Summer 2018", "10045",
+        Course course = new Course("Java", "current", "10045",
                 "Intro to Java",true);
         userCourses.add(new UserCourse(userRepository.findByUsername
                 ("instructor"),course));
@@ -109,6 +109,15 @@ public class DataLoader implements CommandLineRunner{
                 ("jj"),course));
         userCourses.add(new UserCourse(userRepository.findByUsername
                 ("bs"),course));
+        course.setUserCourses(userCourses);
+        courseRepository.save(course);
+
+        course = new Course("Database", "past", "100456",
+                "Intro to database",true);
+        userCourses.add(new UserCourse(userRepository.findByUsername
+                ("instructor"),course));
+        userCourses.add(new UserCourse(userRepository.findByUsername
+                ("jj"),course));
         course.setUserCourses(userCourses);
         courseRepository.save(course);
     }

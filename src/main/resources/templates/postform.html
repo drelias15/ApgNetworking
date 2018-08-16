@@ -1,27 +1,39 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="www.thymeleaf.org/extras/spring-security">
 <head>
-    <meta charset="UTF-8">
     <title>New Post</title>
-
     <th:block th:insert="base :: header"></th:block>
-
 </head>
 <body>
-<div th:replace="base :: navlinks"></div>
-<div class="container">
+    <div th:replace="base :: navlinks"></div>
 
-    <form method="post" action="#" th:action="@{/makepost}" th:object="${post}">
-        <label>Link</label>
-        <input class="form-control" type="text" th:field="*{link}"/>
-        <span class="text-danger border border-danger rounded" th:if="${#fields.hasErrors('link')}" th:errors="*{link}"></span>
-        <label>Content</label>
-        <textarea class="form-control"  th:field="*{content}"></textarea>
-        <span class="text-danger border border-danger rounded" th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></span>
-        <button type="submit" value="submit" class="btn btn-outline-dark">submit</button>
-        <button type="reset" class="btn btn-outline-dark">Reset</button>
-    </form>
-</div>
-<div th:replace="base ::footer"></div>
+    <div class="container">
+
+        <form method="post" action="#" th:action="@{/postform}" th:object="${post}">
+            <input type="hidden" th:field="*{id}">
+            <input type="hidden" th:value="${course_id}" name="course_id">
+
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" class="form-control" th:field="*{title}" id="title">
+            </div>
+            <div class="form-group">
+                <label for="link">Link</label>
+                <input type="text" class="form-control" th:field="*{link}" id="link">
+            </div>
+            <div class="form-group">
+                <label for="content">Content</label>
+                <textarea class="form-control" th:field="*{content}"
+                          id="content"></textarea>
+                <span class="text-danger border border-danger rounded" th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></span>
+            </div>
+            <button type="submit" value="Submit" class="btn btn-primary"/>
+            <button type="reset" value="Reset"
+                    class="btn btn-warning"/>
+        </form>
+
+    </div><!--end div container-->
+
+    <div th:replace="base ::footer"></div>
 </body>
 </html>

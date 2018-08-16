@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"  xmlns:th="http://www.thymeleaf.org" xmlns:sec="www.thymeleaf.org/extras/spring-security">
 <head>
-    <meta charset="UTF-8">
     <title>Course Information</title>
     <th:block th:insert="base :: header"></th:block>
 </head>
@@ -25,7 +24,7 @@
                                 <img class="card-img-top user-img" th:src="${instructor.picUrl}" alt="user profile picture">
                             </div>
                             <a class="card-link btn btn-warning"
-                               th:href="@{/detail/{id}(id=${instructor.id})}">View More</a>
+                               th:href="@{/profile/{id}(id=${instructor.id})}">View More</a>
                         </div>
                     </div>
                 </div><!--end div class col-->
@@ -42,26 +41,36 @@
                                 <img class="card-img-top user-img" th:src="${student.picUrl}" alt="user profile picture">
                             </div>
                             <a class="card-link btn btn-warning"
-                               th:href="@{/detail/{id}(id=${student.id})}">View More</a>
+                               th:href="@{/profile/{id}(id=${student.id})}">View
+                                More</a>
                         </div>
                     </div>
                 </div><!--end div class col-->
             </div><!--end div class for:each-->
 
             <!--Add New Post-->
+            <p>
+            <a class="card-link btn btn-warning"
+               th:href="@{/newpost/{id}(id=${courseid})}">Add New Post</a>
+            </p>
 
             <!--Posts Preview-->
             <div th:each="post : ${posts}">
                 <div><strong><span th:text="${post.title}"></span></strong></div>
                 <div><span th:text="${post.content}"></span></div>
-                <img class="profile-thumbnail" src="@{${post.user.picUrl}}" alt="thumbnail"/>
+                <img class="profile-thumbnail" src="@{${post.user.picUrl}}"
+                     alt="profile-thumbnail"/>
                 <a class="card-link btn btn-warning"
-                   th:href="@{/detail/{id}(id=${post.user.id})}"><span th:text="${post.user.username}"></span></a>
+                   th:href="@{/profile/{id}(id=${post.user.id})}"><span th:text="${post.user.username}"></span></a>
+                <span
+                        th:text="${#dates.format(post.posteddate, 'dd MMM yyyy')}"></span>
+                <
             </div>
 
-            <!--View All Course Posts-->
-            <p>
-                <a class="card-link btn btn-warning" th:href="@{/getCoursePosts/{id}(id=${course.id})}">View More Posts</a>
+            <!--View All Course Posts if there are more than 5-->
+            <p th:if="${post_count > 5}">
+                <a class="card-link btn btn-warning"
+                   th:href="@{/posts/{id}(id=${course.id})}">View More Posts</a>
             </p>
 
         </div><!--end div container-->

@@ -1,43 +1,82 @@
 package ApgNetworking.services;
 
-
-import ApgNetworking.models.ApgUser;
+import ApgNetworking.models.Role;
+import ApgNetworking.models.User;
 import ApgNetworking.repositories.RoleRepository;
 import ApgNetworking.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+
 
 @Service
 public class UserService {
     @Autowired
     UserRepository userRepository;
-
     @Autowired
     RoleRepository roleRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserService(UserRepository userRepository)
+    {
+        this.userRepository=userRepository;
     }
-    public ApgUser findByEmail(String email) {
-        return userRepository.findByEmail(email);
-    }
-    public Long countByEmail(String email) {
-        return userRepository.countByEmail(email);
-    }
-    public ApgUser findByUsername(String username){
+
+    public User findByUsername(String username)
+    {
         return userRepository.findByUsername(username);
     }
-    public void saveUser(ApgUser apgUser) {
-        apgUser.setRoles(Arrays.asList(roleRepository.findByRole("USER")));
-        apgUser.setEnabled(true);
-        userRepository.save(apgUser);
+
+    // Returns the currently logged in User object
+    public User getCurrentUser(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentusername = authentication.getName();
+        User user = userRepository.findByUsername(currentusername);
+        return user;
     }
-    public void saveAdmin(ApgUser user) {
-        user.setRoles(Arrays.asList(roleRepository.findByRole("ADMIN")));
+
+    // receives User object, returns current role of that user
+    public Role getCurrentRole(User user) {
+        Role role = new Role();
+
+        Iterator<Role> it = user.getRoles().iterator();
+        while(it.hasNext()){
+            role = it.next();
+            it.remove();
+        }
+        return role;
+    }
+
+    public void saveAdmin(User user)
+    {
+        user.setRoles(Arrays.asList(roleRepository.findByRole("Admin")));
         user.setEnabled(true);
+        userRepository.save(user);
+    }
+
+    public void saveStudent(User user)
+    {
+        List list = new ArrayList(Arrays.asList(roleRepository.findByRole("Student")));
+        user.setRoles(list);
+        user.setEnabled(true);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+    }
+
+    public void saveInstructor(User user)
+    {
+        user.setRoles(Arrays.asList(roleRepository.findByRole("Instructor")));
+        user.setEnabled(true);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
 }

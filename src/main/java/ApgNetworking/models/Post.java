@@ -2,6 +2,7 @@ package ApgNetworking.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.Date;
 
 
 @Entity
@@ -11,6 +12,7 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    private Date posteddate;
     private String title;
     private String link;
 
@@ -32,6 +34,7 @@ public class Post {
         this.title = title;
         this.link = link;
         this.content = content;
+        this.posteddate = new Date();
     }
 
     public long getId() {
@@ -40,6 +43,14 @@ public class Post {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public Date getPosteddate() {
+        return posteddate;
+    }
+
+    public void setPosteddate() {
+        this.posteddate = new Date();
     }
 
     public String getTitle() {
