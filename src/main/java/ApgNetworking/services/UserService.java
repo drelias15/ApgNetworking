@@ -10,10 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 
 @Service
@@ -54,6 +51,19 @@ public class UserService {
             it.remove();
         }
         return role;
+    }
+
+    // Receives role id and role name, returns collection of roles
+    public void SetNewRole(String role_name, User user) {
+        Role role = new Role();
+        long role_id = roleRepository.findByRole(role_name).getId();
+        role.setId(role_id);
+        role.setRole(role_name);
+        Collection<Role> roles = new HashSet<>();
+        roles.add(role);
+
+        user.setRoles(roles);
+        userRepository.save(user);
     }
 
     public void saveAdmin(User user)

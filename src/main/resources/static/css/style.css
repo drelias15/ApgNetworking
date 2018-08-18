@@ -34,8 +34,17 @@ profile-img {
     margin: 10px auto;
 }
 
+.profile row {
+
+}
+
+.profile-photo {
+    margin: auto 0px;
+}
+
 .profile-info {
     padding: 15px;
+    margin-left: 40px;
 }
 
 h4 {

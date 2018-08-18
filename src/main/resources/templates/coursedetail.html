@@ -69,7 +69,7 @@
                         th:href="@{/profile/{id}(id=${post.user.id})}"><strong><span
                         th:text="${post.user.username}"></span></strong></a>
                 <span
-                        th:text="${#dates.format(post.posteddate, 'dd MMM yyyy')}"></span>
+                        th:text="${#temporals.format(post.posteddate, 'dd MMM yyyy HH:mm')}"></span>
             </div>
 
             <!--View All Course Posts if there are more than 5-->

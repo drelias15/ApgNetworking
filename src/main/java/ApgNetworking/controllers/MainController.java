@@ -136,6 +136,28 @@ public class MainController {
 		return "profile";
 	}
 
+	@RequestMapping ("/updateToAdmin/{id}")
+	public String UpdateToAdminRole(@PathVariable("id") long id, Model model){
+		userService.SetNewRole("Admin", userRepository.findById(id).get());
+		model.addAttribute("users", userRepository.findAll());
+		return "admin/users";
+	}
+
+	@RequestMapping ("/updateToInstructor/{id}")
+	public String UpdateToInstructorRole(@PathVariable("id") long id,
+									   Model model){
+		userService.SetNewRole("Instructor", userRepository.findById(id).get());
+		model.addAttribute("users", userRepository.findAll());
+		return "admin/users";
+	}
+
+	@RequestMapping ("/updateToStudent/{id}")
+	public String UpdateToStudentRole(@PathVariable("id") long id, Model model){
+		userService.SetNewRole("Student", userRepository.findById(id).get());
+		model.addAttribute("users", userRepository.findAll());
+		return "admin/users";
+	}
+
 	//====================================================================
 	// COURSES
 	//====================================================================

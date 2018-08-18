@@ -1,7 +1,10 @@
 package ApgNetworking.models;
 
+import org.apache.tomcat.jni.Local;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 
@@ -12,7 +15,7 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private Date posteddate;
+    private LocalDateTime posteddate;
     private String title;
     private String link;
 
@@ -34,7 +37,8 @@ public class Post {
         this.title = title;
         this.link = link;
         this.content = content;
-        this.posteddate = new Date();
+        LocalDateTime current = LocalDateTime.now();
+        this.posteddate = current;
     }
 
     public long getId() {
@@ -45,12 +49,13 @@ public class Post {
         this.id = id;
     }
 
-    public Date getPosteddate() {
+    public LocalDateTime getPosteddate() {
         return posteddate;
     }
 
     public void setPosteddate() {
-        this.posteddate = new Date();
+        LocalDateTime current = LocalDateTime.now();
+        this.posteddate = current;
     }
 
     public String getTitle() {
