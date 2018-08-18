@@ -24,8 +24,9 @@ public class UserCourse {
     public UserCourse() {
     }
 
-    public UserCourse(User user, Course course) {
+    public UserCourse(User user, Role role, Course course) {
         this.user = user;
+        this.role = role;
         this.course = course;
     }
 

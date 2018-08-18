@@ -51,7 +51,7 @@ public class DataLoader implements CommandLineRunner{
         addUserAndRoles();
         addCourses();
         addPosts();
-        addMessages();
+//        addMessages();
     }
 
     private void addUserAndRoles(){
@@ -97,28 +97,32 @@ public class DataLoader implements CommandLineRunner{
     }
 
     private void addCourses(){
-        Collection<UserCourse> userCourses = new ArrayList<>();
+        Collection<UserCourse> userCourses1 = new ArrayList<>();
+        Collection<UserCourse> userCourses2 = new ArrayList<>();
+
+        Role studentRole = roleRepository.findByRole("Student");
+        Role instructorRole = roleRepository.findByRole("Instructor");
 
         Course course = new Course("Java", "current", "10045",
                 "Intro to Java",true);
-        userCourses.add(new UserCourse(userRepository.findByUsername
-                ("instructor"),course));
-        userCourses.add(new UserCourse(userRepository.findByUsername
-                ("maf"),course));
-        userCourses.add(new UserCourse(userRepository.findByUsername
-                ("jj"),course));
-        userCourses.add(new UserCourse(userRepository.findByUsername
-                ("bs"),course));
-        course.setUserCourses(userCourses);
+        userCourses1.add(new UserCourse(userRepository.findByUsername
+                ("instructor"),instructorRole,course));
+        userCourses1.add(new UserCourse(userRepository.findByUsername
+                ("maf"),studentRole,course));
+        userCourses1.add(new UserCourse(userRepository.findByUsername
+                ("jj"),studentRole,course));
+        userCourses1.add(new UserCourse(userRepository.findByUsername
+                ("bs"),studentRole,course));
+        course.setUserCourses(userCourses1);
         courseRepository.save(course);
 
         course = new Course("Database", "past", "100456",
-                "Intro to database",true);
-        userCourses.add(new UserCourse(userRepository.findByUsername
-                ("instructor"),course));
-        userCourses.add(new UserCourse(userRepository.findByUsername
-                ("jj"),course));
-        course.setUserCourses(userCourses);
+                "Intro to database",false);
+        userCourses2.add(new UserCourse(userRepository.findByUsername
+                ("instructor"),instructorRole,course));
+        userCourses2.add(new UserCourse(userRepository.findByUsername
+                ("jj"),studentRole,course));
+        course.setUserCourses(userCourses2);
         courseRepository.save(course);
     }
 

@@ -14,25 +14,28 @@
             <p><strong>Course Description: </strong><span th:text="${course.description}"></span></p>
 
             <!--List Instructors-->
-            <div th:each="instructor : ${instructors}">
-                <div class="col-sm-3">
+            <h4>Instructors</h4>
+            <div class="row">
+                <div class="col-sm-3" th:each="instructor : ${instructors}">
                     <div class="card text-center">
                         <div class="card-header text-center"><span
                                 th:text="${instructor.firstName + ' ' +  instructor.lastName}"></span></div>
                         <div class="card-body">
                             <div th:if="${instructor.picUrl != ''}">
-                                <img class="card-img-top user-img" th:src="${instructor.picUrl}" alt="user profile picture">
+                                <img class="card-img-top profile-img"
+                                     th:src="${instructor.picUrl}" alt="user profile picture">
                             </div>
-                            <a class="card-link btn btn-warning"
-                               th:href="@{/profile/{id}(id=${instructor.id})}">View More</a>
+                            <a class="profile-link btn btn-warning"
+                                  th:href="@{/profile/{id}(id=${instructor.id})}">View More</a>
                         </div>
                     </div>
-                </div><!--end div class col-->
-            </div><!--end div class for:each-->
+                </div><!--end div class for:each-->
+            </div>
 
             <!--List Students-->
-            <div th:each="student : ${students}">
-                <div class="col-sm-3">
+            <h4>Students</h4>
+            <div class="row">
+                <div class="col-sm-3" th:each="student : ${students}">
                     <div class="card text-center">
                         <div class="card-header text-center"><span
                                 th:text="${student.firstName + ' ' +  student.lastName}"></span></div>
@@ -40,31 +43,33 @@
                             <div th:if="${student.picUrl != ''}">
                                 <img class="card-img-top user-img" th:src="${student.picUrl}" alt="user profile picture">
                             </div>
-                            <a class="card-link btn btn-warning"
+                            <a class="profile-link btn btn-warning"
                                th:href="@{/profile/{id}(id=${student.id})}">View
                                 More</a>
                         </div>
                     </div>
-                </div><!--end div class col-->
-            </div><!--end div class for:each-->
+                </div><!--end div class for:each-->
+            </div>
+
+            <h4>Posts</h4>
 
             <!--Add New Post-->
             <p>
             <a class="card-link btn btn-warning"
-               th:href="@{/newpost/{id}(id=${courseid})}">Add New Post</a>
+               th:href="@{/newpost/{id}(id=${course.id})}">Add New Post</a>
             </p>
 
             <!--Posts Preview-->
             <div th:each="post : ${posts}">
                 <div><strong><span th:text="${post.title}"></span></strong></div>
                 <div><span th:text="${post.content}"></span></div>
-                <img class="profile-thumbnail" src="@{${post.user.picUrl}}"
+                <img class="profile-thumbnail" th:src="${post.user.picUrl}"
                      alt="profile-thumbnail"/>
-                <a class="card-link btn btn-warning"
-                   th:href="@{/profile/{id}(id=${post.user.id})}"><span th:text="${post.user.username}"></span></a>
+                <a
+                        th:href="@{/profile/{id}(id=${post.user.id})}"><strong><span
+                        th:text="${post.user.username}"></span></strong></a>
                 <span
                         th:text="${#dates.format(post.posteddate, 'dd MMM yyyy')}"></span>
-                <
             </div>
 
             <!--View All Course Posts if there are more than 5-->

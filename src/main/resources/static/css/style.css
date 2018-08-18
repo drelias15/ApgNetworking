@@ -1,5 +1,21 @@
+body {
+    background-color: lightgrey;
+}
+
+.navlinks {
+    margin-bottom: 30px;
+}
+
+.container {
+    margin: 50px auto;
+}
+
 .card p-4 {
     display: inline-block;
+}
+
+.profile {
+    border: 2px solid #5a6268;
 }
 
 .profile-thumbnail{
@@ -7,10 +23,21 @@
     width: 30px;
 }
 
-.profile {
-    border: 2px solid #5a6268;
+profile-img {
+    height: 200px;
+    width: 200px;
+    border-radius: 5px;
+}
+
+.profile-link {
+    display: block;
+    margin: 10px auto;
 }
 
 .profile-info {
     padding: 15px;
+}
+
+h4 {
+    margin-top: 30px;
 }

@@ -11,9 +11,11 @@
 
         <h2>Courses</h2>
 
-        <a class="btn btn-warning" href="/courses">All Courses</a>
-        <a class="btn btn-warning" href="/currentCourses">Current Courses</a>
-        <a class="btn btn-warning" href="/pastCourses">Past Courses</a>
+        <p>
+            <a class="btn btn-warning" href="/courses">All Courses</a>
+            <a class="btn btn-warning" href="/currentCourses">Current Courses</a>
+            <a class="btn btn-warning" href="/pastCourses">Past Courses</a>
+        </p>
 
         <table class="table table-hover">
             <thead>
@@ -28,7 +30,7 @@
                 <tr th:each="course : ${courses}">
                     <td><span th:text="${course.crn}"></span></td>
                     <td>
-                        <a href="@{/coursedetail/{id}(id=${course.id})}">
+                        <a th:href="@{/coursedetail/{id}(id=${course.id})}">
                             <span th:text="${course.name}"></span>
                         </a>
                     </td>

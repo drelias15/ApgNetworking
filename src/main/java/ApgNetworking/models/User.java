@@ -17,7 +17,7 @@ public class User {
 	private String firstName;
 	@Size(min=3)
 	private String lastName;
-	@Size(min=3)
+	@Size(min=2)
 	private String username;
 	@Size(min=3)
 	private String password;

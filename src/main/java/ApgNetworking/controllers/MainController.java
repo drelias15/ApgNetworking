@@ -48,6 +48,16 @@ public class MainController {
 		return "login";
 	}
 
+	//====================================================================
+	// USER
+	//====================================================================
+
+	@RequestMapping("/users")
+	public String GetUsers(Model model) {
+		model.addAttribute("users", userRepository.findAll());
+		return "admin/users";
+	}
+
 	@GetMapping("/register")
 	public String Registration(Model model) {
 		model.addAttribute("user", new User());
@@ -57,31 +67,66 @@ public class MainController {
 
 	@PostMapping("/processUser")
 	public String ProcessUser(@Valid@ModelAttribute("user")User user,
-							  BindingResult result, Model model,@RequestParam("file")MultipartFile file) {
-		if (result.hasErrors()||file.isEmpty()) {
+							  BindingResult result, Model model,
+							  @RequestParam("file") MultipartFile file,
+							  @RequestParam("img_url") String img_url) {
+
+		if(file.isEmpty() || result.hasErrors()) {
+			if(file.isEmpty()) {
+				model.addAttribute("uploadPhotoMessage", "Profile photo is required.");
+			}
+			model.addAttribute("img_url", img_url);
 			model.addAttribute("courses", courseRepository.findAll());
 			return "userinfo";
-		} else {
-			try {
-				Map uploadResult =  cloudc.upload(file.getBytes(),
+		}
+
+		try {
+			// If (new) image selected, upload to Cloudinary
+			if(!file.isEmpty()) {
+				Map uploadResult = cloudc.upload(file.getBytes(),
 						ObjectUtils.asMap("resourcetype", "auto"));
 				user.setPicUrl(uploadResult.get("url").toString());
-
-				if(!user.getLinkedIn().startsWith("https://")){
-					user.setLinkedIn("https://"+user.getLinkedIn());
-				}
-				if(!user.getGithub().startsWith("https://")){
-					user.setGithub("https://"+user.getGithub());
-				}
-
-				userService.saveStudent(user);
-			} catch (IOException e){
-				e.printStackTrace();
-				model.addAttribute("courses", courseRepository.findAll());
-				return "redirect:/userinfo";
 			}
-			return "login";
+
+			// Else set URL for current profile photo
+			else {
+				if(!img_url.isEmpty()) {
+					user.setPicUrl(img_url);
+				}
+				else {
+					user.setPicUrl("");
+				}
+			}
+
+			if(!user.getLinkedIn().startsWith("https://")){
+				user.setLinkedIn("https://" + user.getLinkedIn());
+			}
+			if(!user.getGithub().startsWith("https://")){
+				user.setGithub("https://" + user.getGithub());
+			}
+			// Check if new user registering
+			if(userRepository.countByUsername(user.getUsername()) < 1) {
+				userService.saveStudent(user);
+			}
+			// Else re-save user
+			else{
+				userRepository.save(user);
+			}
+		} catch (IOException e){
+			e.printStackTrace();
+			model.addAttribute("imageURL", img_url);
+			model.addAttribute("courses", courseRepository.findAll());
+			return "userinfo";
 		}
+		return "redirect:/";
+	}
+
+	@RequestMapping("/myprofile")
+	public String GetMyProfile(Model model) {
+		User user = userService.getCurrentUser();
+		model.addAttribute("user", user);
+		model.addAttribute("img_url", user.getPicUrl());
+		return "userinfo";
 	}
 
 	@RequestMapping ("/profile/{id}")
@@ -98,7 +143,7 @@ public class MainController {
 	@GetMapping("/courseform")
 	public String GetCourseForm(Model model) {
 		model.addAttribute("course", new Course());
-		return "courseform";
+		return "admin/courseform";
 	}
 
 	@PostMapping("/addcourse")
@@ -150,6 +195,10 @@ public class MainController {
 				courses.add(course);
 			}
 			userCourseIterator.remove();
+		}
+
+		if(role.getRole().equals("Admin")) {
+			return courseRepository.findAllBySemester(semester);
 		}
 
 		return courses;

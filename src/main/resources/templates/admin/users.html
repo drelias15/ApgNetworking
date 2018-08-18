@@ -1,10 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="www.thymeleaf.org/extras/spring-security">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Users</title>
+    <th:block th:insert="base :: header"></th:block>
 </head>
 <body>
+    <div th:replace="base :: navlinks"></div>
 
+    <div class="container">
+
+        <div class="table-responsive">
+            <table class="table table-hover text-center">
+                <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Name</th>
+                    <th>Current Role</th>
+                    <th>Update Role</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user : ${users}">
+                    <td ><span th:text="${user.username}"></span></td>
+                    <td
+                    ><span th:text="${user.firstName + ' ' + user.lastName}"></span></td>
+                    <td >
+                        <div th:each="role: ${user.roles}">
+                            <span th:text="${role.role}"></span>
+                        </div>
+                    </td>
+                    <td>
+                        <div th:each="role: ${user.roles}">
+                            <span th:if="${role.role != 'Admin'}">
+                                <a class="btn btn-primary" th:href ="@{/updateToAdmin/{id}(id=${user.id})}">Admin</a>
+                            </span>
+                            <span th:if="${role.role != 'Student'}">
+                                <a class="btn btn-primary" th:href ="@{/updateToStudent/{id}(id=${user.id})}">Student</a>
+                            </span>
+                            <span th:if="${role.role != 'Instructor'}">
+                                <a class="btn btn-primary" th:href ="@{/updateToInstructor/{id}(id=${user.id})}">Instructor</a>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+    </div>
+
+    <div th:replace="base ::footer"></div>
 </body>
 </html>

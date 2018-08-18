@@ -19,7 +19,7 @@
                                     th:text="${post.title}"></span></strong>
                         </div>
                         <div th:if="${post.link != ''}">
-                            <a th:href="@{${post.link}" target="_blank">
+                            <a th:href="@{${post.link}}" target="_blank">
                                 <span th:text="${post.link}"></span>
                             </a>
                         </div>
@@ -27,7 +27,8 @@
                             <span th:text="${post.content}"></span>
                         </div>
                         <div>
-                            <img class="profile-thumbnail" src="@{${post.user.picUrl}}"
+                            <img class="profile-thumbnail"
+                                 th:src="${post.user.picUrl}"
                                  alt="profile-thumbnail"/>
                             <a class="card-link btn btn-warning"
                                th:href="@{/profile/{id}(id=${post.user.id})}"><span th:text="${post.user.username}"></span></a>
