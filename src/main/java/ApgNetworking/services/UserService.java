@@ -1,8 +1,11 @@
 package ApgNetworking.services;
 
+import ApgNetworking.models.Course;
 import ApgNetworking.models.Role;
 import ApgNetworking.models.User;
+import ApgNetworking.models.UserCourse;
 import ApgNetworking.repositories.RoleRepository;
+import ApgNetworking.repositories.UserCourseRepository;
 import ApgNetworking.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -10,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.CollectionTable;
 import java.util.*;
 
 
@@ -19,6 +23,8 @@ public class UserService {
     UserRepository userRepository;
     @Autowired
     RoleRepository roleRepository;
+    @Autowired
+    UserCourseRepository userCourseRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -64,6 +70,22 @@ public class UserService {
 
         user.setRoles(roles);
         userRepository.save(user);
+    }
+
+    public ArrayList<Course> GetAllCoursesByUser(User user) {
+        Collection<UserCourse> userCourses =
+                userCourseRepository.findAllByUser(user);
+        Iterator<UserCourse> userCourseIterator = userCourses.iterator();
+
+        ArrayList<Course> courses = new ArrayList<>();
+
+        while(userCourseIterator.hasNext()) {
+            Course course = userCourseIterator.next().getCourse();
+            courses.add(course);
+            userCourseIterator.remove();
+        }
+
+        return courses;
     }
 
     public void saveAdmin(User user)

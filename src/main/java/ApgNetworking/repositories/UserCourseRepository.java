@@ -12,4 +12,5 @@ import java.util.Collection;
 public interface UserCourseRepository extends CrudRepository<UserCourse, Long> {
     ArrayList<UserCourse> findAllByRoleAndCourse(Role role, Course course);
     Collection<UserCourse> findAllByUserAndRole(User user, Role role);
+    Collection<UserCourse> findAllByUser(User user);
 }

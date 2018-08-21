@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="www.thymeleaf.org/extras/spring-security">
 <head>
     <title>Register</title>
-    <th:block th:insert="base :: header"></th:block>
+    <th:block th:include="base :: header"></th:block>
 </head>
 <body>
     <div th:replace="base :: navlinks"> </div>
@@ -10,8 +10,10 @@
     <div class="container">
         <h2>My Profile</h2>
 
-        <form method="post" action="#" th:action="@{/processUser}"
-           th:object="${user}"
+        <form method="post"
+              action="/processUser"
+              th:action="@{/register}"
+              th:object="${user}"
               enctype="multipart/form-data">
 
             <input type="hidden" th:field="*{id}">
@@ -65,35 +67,22 @@
             <div class="form-group">
                 <input type="hidden" th:value="${img_url}" name="img_url"/>
                 <div th:if="${img_url != null}">
-                    <img th:src="${img_url}"
-                         alt="profile photo"/>
+                    <img th:src="${img_url}" alt="profile photo"/>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="file">Upload/update your profile photo</label>
-                <div th:if="${uploadPhotoMessage != null}">
+                <input type="file" class="form-control" id="file" name="file" />
+                <span th:if="${uploadPhotoMessage != null}">
                     <span class="text-danger border border-danger rounded"
                           th:text="${uploadPhotoMessage}"></span>
-                </div>
-                <input type="file" class="form-control" id="file" name="file" />
+                </span>
             </div>
 
             <div class="form-group">
-                <label> Select courses that you've taken or are currently enrolled in</label>
-                <select class="custom-select" th:field="*{userCourses}" multiple>
-                    <option th:each="course : ${courses}"
-                            th:value="${course.id}"
-                            th:name="${course.name}">
-                        <p>Course Name: [[${course.name}]], Course Semester:
-                            [[${course.semester}]]</p>
-                    </option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary">Submit</button>
-                <button type="reset" class="btn btn-warning">Reset</button>
+                <input type="submit" value="Submit" class="btn btn-primary"/>
+                <input type="reset" value="Reset" class="btn btn-warning"/>
             </div>
         </form>
     </div>

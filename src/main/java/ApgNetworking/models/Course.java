@@ -1,12 +1,8 @@
 package ApgNetworking.models;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-
-import java.util.Collection;
-import java.util.Set;
-
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.Collection;
 
 @Entity
 @Table(name="APGCourse")

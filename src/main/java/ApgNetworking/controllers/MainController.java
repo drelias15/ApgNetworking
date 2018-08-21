@@ -61,22 +61,20 @@ public class MainController {
 	@GetMapping("/register")
 	public String Registration(Model model) {
 		model.addAttribute("user", new User());
-		model.addAttribute("courses", courseRepository.findAll());
 		return "userinfo";
 	}
 
-	@PostMapping("/processUser")
-	public String ProcessUser(@Valid@ModelAttribute("user")User user,
+	@PostMapping("/register")
+	public String AddUpdateUser(@Valid @ModelAttribute("user") User user,
 							  BindingResult result, Model model,
 							  @RequestParam("file") MultipartFile file,
 							  @RequestParam("img_url") String img_url) {
 
-		if(file.isEmpty() || result.hasErrors()) {
-			if(file.isEmpty()) {
-				model.addAttribute("uploadPhotoMessage", "Profile photo is required.");
-			}
+		System.out.println("process form reached");
+
+		if((file.isEmpty() && img_url.isEmpty()) || result.hasErrors()) {
+			model.addAttribute("uploadPhotoMessage", "Profile photo is required.");
 			model.addAttribute("img_url", img_url);
-			model.addAttribute("courses", courseRepository.findAll());
 			return "userinfo";
 		}
 
@@ -115,7 +113,6 @@ public class MainController {
 		} catch (IOException e){
 			e.printStackTrace();
 			model.addAttribute("imageURL", img_url);
-			model.addAttribute("courses", courseRepository.findAll());
 			return "userinfo";
 		}
 		return "redirect:/";
@@ -181,10 +178,46 @@ public class MainController {
 		}
 	}
 
-	@RequestMapping("/courses")
+	@RequestMapping("/mycourses")
 	public String GetAllCourses(Model model){
-		model.addAttribute("courses", courseRepository.findAll());
+		model.addAttribute("courses",
+				userService.GetAllCoursesByUser(userService.getCurrentUser()));
+		model.addAttribute("displayEnroll",false);
+		model.addAttribute("displayDrop",true);
 		return "courses";
+	}
+
+	@RequestMapping("/enrollcourse")
+	public String GetListOfCoursesToEnroll(Model model) {
+		ArrayList<Course> userCourses =
+				userService.GetAllCoursesByUser(userService.getCurrentUser());
+		Iterable<Course> allCourses = courseRepository.findAll();
+		Iterator<Course> courseIterator = allCourses.iterator();
+
+		ArrayList<Course> courses = new ArrayList<>();
+
+		while(courseIterator.hasNext()) {
+			Course course = courseIterator.next();
+			if(!userCourses.contains(course)){
+				courses.add(course);
+			}
+			courseIterator.remove();
+		}
+
+		model.addAttribute("displayEnroll",true);
+		model.addAttribute("displayDrop",false);
+		model.addAttribute("courses", courses);
+		return "courses";
+	}
+
+	@RequestMapping("/enrollcourse/{id}")
+	public String AddToMyCourses(@PathVariable("id") long id, Model model) {
+		Course course = courseRepository.findById(id).get();
+		User user = userService.getCurrentUser();
+		UserCourse userCourse = new UserCourse(user,
+				userService.getCurrentRole(user), course);
+		userCourseRepository.save(userCourse);
+		return "redirect:/mycourses";
 	}
 
 	@RequestMapping("/currentCourses")

@@ -26,6 +26,8 @@ public class User {
 	private String github;
 	private boolean enabled;
 
+	//MultipartFile file;
+
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(joinColumns = @JoinColumn(name = "user_id"),
 			inverseJoinColumns = @JoinColumn(name = "role_id"))

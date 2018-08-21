@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="www.thymeleaf.org/extras/spring-security">
 <head>
     <title>Courses</title>
-    <th:block th:insert="base :: header"></th:block>
+    <th:block th:include="base :: header"></th:block>
 </head>
 <body>
     <div th:replace="base :: navlinks"></div>
@@ -12,7 +12,8 @@
         <h2>Courses</h2>
 
         <p>
-            <a class="btn btn-warning" href="/courses">All Courses</a>
+            <a class="btn btn-warning" href="/courses">My Courses</a>
+            <a class="btn btn-warning" href="/courses">My Courses</a>
             <a class="btn btn-warning" href="/currentCourses">Current Courses</a>
             <a class="btn btn-warning" href="/pastCourses">Past Courses</a>
         </p>
@@ -35,17 +36,33 @@
                         </a>
                     </td>
                     <td><span th:text="${course.semester}"></span></td>
-                    <td sec:authorize="hasAuthority('Admin')">
-                        <div th:if="${course.active == true}">
-                            <a class="btn btn-primary" th:href
-                                    ="@{/disableCourse/{id}(id=${course.id})}">
-                                Disable</a>
-                        </div>
-                        <div th:if="${course.active == false}">
-                            <a class="btn btn-primary" th:href
-                                    ="@{/enableCourse/{id}(id=${course.id})}">
-                                Enable</a>
-                        </div>
+                    <td>
+                        <!--Enable/disable courses for Admin only-->
+                        <span sec:authorize="hasAuthority('Admin')">
+                            <span th:if="${course.active == true}">
+                                <a class="btn btn-primary" th:href
+                                        ="@{/disableCourse/{id}(id=${course.id})}">
+                                    Disable</a>
+                            </span>
+                            <span th:if="${course.active == false}">
+                                <a class="btn btn-primary" th:href
+                                        ="@{/enableCourse/{id}(id=${course.id})}">
+                                    Enable</a>
+                            </span>
+                        </span>
+                        <!--Add/drop courses for users-->
+                        <span sec:authorize="isAuthenticated()">
+                            <span th:if="${displayEnroll == true}">
+                                <a class="btn btn-primary" th:href
+                                    ="@{/enrollcourse/{id}(id=${course.id})}">
+                                    Enroll</a>
+                            </span>
+                            <span th:if="${displayDrop == true}">
+                                <a class="btn btn-primary" th:href
+                                        ="@{/dropcourse/{id}(id=${course.id})}">
+                                    Drop</a>
+                            </span>
+                        </span>
                     </td>
                 </tr>
             </tbody>
