@@ -12,7 +12,7 @@ public class Role {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private String role;
-	@ManyToMany(mappedBy = "roles",fetch = FetchType.LAZY)
+	@ManyToMany(mappedBy = "roles",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Collection<User> users;
 	public Role(String role) {
 		this.role = role;

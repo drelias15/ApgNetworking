@@ -49,14 +49,14 @@ public class UserService {
 
     // receives User object, returns current role of that user
     public Role getCurrentRole(User user) {
-        Role role = new Role();
-
+        //Role role = new Role();
         Iterator<Role> it = user.getRoles().iterator();
-        while(it.hasNext()){
-            role = it.next();
-            it.remove();
-        }
-        return role;
+       // it.next();
+//        while(it.hasNext()){
+//            role = it.next();
+//            it.remove();
+//        }
+        return it.next();
     }
 
     // Receives role id and role name, returns collection of roles

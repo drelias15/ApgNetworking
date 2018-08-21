@@ -144,4 +144,6 @@ public class User {
 	public void setUserCourses(Collection<UserCourse> userCourses) {
 		this.userCourses = userCourses;
 	}
+
+
 }

@@ -106,7 +106,7 @@ public class MainController {
 			if(userRepository.countByUsername(user.getUsername()) < 1) {
 				userService.saveStudent(user);
 			}
-			// Else re-save user
+			// Else re-save user //
 			else{
 				userRepository.save(user);
 			}
@@ -214,14 +214,17 @@ public class MainController {
 	public String AddToMyCourses(@PathVariable("id") long id, Model model) {
 		Course course = courseRepository.findById(id).get();
 		User user = userService.getCurrentUser();
+
 		UserCourse userCourse = new UserCourse(user,
 				userService.getCurrentRole(user), course);
 		userCourseRepository.save(userCourse);
+
 		return "redirect:/mycourses";
 	}
 
 	@RequestMapping("/currentCourses")
 	public String GetCurrentCourses(Model model) {
+
 		model.addAttribute("courses", getCourses("current"));
 		return "courses";
 	}
@@ -318,7 +321,7 @@ public class MainController {
 		Course course = courseRepository.findById(id).get();
 		course.setActive(false);
 		courseRepository.save(course);
-		return "redirect:/courses";
+		return "redirect:/enrollcourse";
 	}
 
 	@RequestMapping ("/enableCourse/{id}")
@@ -326,7 +329,7 @@ public class MainController {
 		Course course = courseRepository.findById(id).get();
 		course.setActive(true);
 		courseRepository.save(course);
-		return "redirect:/courses";
+		return "redirect:/enrollcourse";
 	}
 
 	//====================================================================
