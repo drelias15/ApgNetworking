@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Courses</title>
+    <th:block th:include="base :: header"></th:block>
+</head>
+<body>
+<div th:replace="base :: navlinks"></div>
+<h2>The Username you chose already exists. Please <a href="/register">Register</a> again with a different username.</h2>
+
+<div th:replace="base ::footer"></div>
+</body>
+</html>

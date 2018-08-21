@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -48,6 +49,11 @@ public class MainController {
 		return "login";
 	}
 
+	@RequestMapping("/exists")
+	public String Exists() {
+		return "usernameexists";
+	}
+
 	//====================================================================
 	// USER
 	//====================================================================
@@ -68,7 +74,7 @@ public class MainController {
 	public String AddUpdateUser(@Valid @ModelAttribute("user") User user,
 							  BindingResult result, Model model,
 							  @RequestParam("file") MultipartFile file,
-							  @RequestParam("img_url") String img_url) {
+							  @RequestParam("img_url") String img_url, Errors errors) {
 
 		System.out.println("process form reached");
 
@@ -108,7 +114,8 @@ public class MainController {
 			}
 			// Else re-save user //
 			else{
-				userRepository.save(user);
+				//userRepository.save(user);
+				return "redirect:/exists";
 			}
 		} catch (IOException e){
 			e.printStackTrace();
