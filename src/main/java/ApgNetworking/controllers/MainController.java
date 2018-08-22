@@ -37,6 +37,8 @@ public class MainController {
 	CloudinaryConfig cloudc;
 	@Autowired
 	private PostRepository postRepository;
+	@Autowired
+	private PrivateMessageRepository privateMessageRepository;
 
 
 	@RequestMapping("/")
@@ -378,5 +380,47 @@ public class MainController {
 		model.addAttribute("course", course);
 		model.addAttribute("posts", postRepository.findAllByCourse(course));
 		return "posts";
+	}
+
+	@RequestMapping ("/newmessage/{id}")
+	public String GetmessageForm(@PathVariable("id") long id, Model model){
+		model.addAttribute("course_id", id);
+//		model.addAttribute("receiver_id", id);
+//		model.addAttribute("sender_id", id);
+		model.addAttribute("users", userRepository.findAll());
+		model.addAttribute("privatemessage", new PrivateMessage());
+		return "messageform";
+	}
+	@PostMapping("/messageform")
+	public String SendMessage(@Valid @ModelAttribute("privatemessage") PrivateMessage privateMessage,
+						  BindingResult result, Model model, HttpServletRequest request){
+		if (result.hasErrors()) {
+			return "messageform";
+		}
+		else {
+			Course course =
+					courseRepository.findById(new Long(request.getParameter(
+							"course_id"))).get();
+			User receiver = userRepository.findById(new Long(request.getParameter("receiver_id"))).get();
+			privateMessage.setCourse(course);
+			privateMessage.setReceiver(receiver);
+			User sender = userService.getCurrentUser();
+			privateMessage.setSender(sender);
+
+			privateMessageRepository.save(privateMessage);
+			model.addAttribute("course", course);
+			model.addAttribute("user", userRepository);
+			model.addAttribute("privateMessage", privateMessageRepository.findAllBySender(sender));
+			return "redirect:/mycourses";
+		}
+	}
+	@RequestMapping("/messages")
+	public String GetMessages(Model model){
+		//Course course = courseRepository.findById(id).get();
+		User sender = userService.getCurrentUser();
+		model.addAttribute("sender", sender);
+		//model.addAttribute("course", course);
+		model.addAttribute("privatemessages",privateMessageRepository.findAllBySender(sender));
+		return "inbox";
 	}
 }

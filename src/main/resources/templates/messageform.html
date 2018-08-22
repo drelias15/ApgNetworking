@@ -8,7 +8,34 @@
     <div th:replace="base :: navlinks"></div>
 
     <div class="container">
+        <form method="post" action="#" th:action="@{/messageform}" th:object="${privatemessage}">
+            <input type="hidden" th:field="*{id}">
+            <input type="hidden" th:value="${course_id}" name="course_id">
 
+            <div class="form-group">
+                <label for="receiver">To</label>
+                <select name="receiver_id" id="receiver">
+                    <option th:each="user : ${users}"
+                            th:text="${user.firstName}"
+                            th:value="${user.id}">
+                </option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="subject">Subject</label>
+                <input type="text" class="form-control" th:field="*{subject}" id="subject">
+            </div>
+
+            <div class="form-group">
+                <label for="content">Content</label>
+                <textarea class="form-control" th:field="*{messageContent}"
+                          id="content"></textarea>
+                <span class="text-danger border border-danger rounded" th:if="${#fields.hasErrors('messageContent')}" th:errors="*{messageContent}"></span>
+            </div>
+            <button type="submit" value="Submit" class="btn btn-primary"/>
+            <button type="reset" value="Reset"
+                    class="btn btn-warning"/>
+        </form>
     </div>
 
     <div th:replace="base ::footer"></div>

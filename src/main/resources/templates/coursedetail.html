@@ -57,6 +57,8 @@
             <p>
             <a class="card-link btn btn-warning"
                th:href="@{/newpost/{id}(id=${course.id})}">Add New Post</a>
+                <a class="card-link btn btn-warning"
+                   th:href="@{/newmessage/{id}(id=${course.id})}">Send a Message</a>
             </p>
 
             <!--Posts Preview-->
@@ -76,6 +78,7 @@
             <p th:if="${post_count > 5}">
                 <a class="card-link btn btn-warning"
                    th:href="@{/posts/{id}(id=${course.id})}">View More Posts</a>
+
             </p>
 
         </div><!--end div container-->
