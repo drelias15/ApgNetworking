@@ -3,9 +3,11 @@ package ApgNetworking.controllers;
 import ApgNetworking.configurations.CloudinaryConfig;
 import ApgNetworking.models.*;
 import ApgNetworking.repositories.*;
+import ApgNetworking.services.NotificationService;
 import ApgNetworking.services.UserService;
 import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -39,6 +41,8 @@ public class MainController {
 	private PostRepository postRepository;
 	@Autowired
 	private PrivateMessageRepository privateMessageRepository;
+	@Autowired
+	private NotificationService notificationService;
 
 
 	@RequestMapping("/")
@@ -124,6 +128,12 @@ public class MainController {
 			model.addAttribute("imageURL", img_url);
 			return "userinfo";
 		}
+		try{
+			notificationService.SendNotification(user);
+		}catch (MailException e){
+
+		}
+
 		return "redirect:/";
 	}
 
@@ -387,7 +397,7 @@ public class MainController {
 		model.addAttribute("course_id", id);
 //		model.addAttribute("receiver_id", id);
 //		model.addAttribute("sender_id", id);
-		model.addAttribute("users", userRepository.findAll());
+		model.addAttribute("users", userRepository.findByRole(3));
 		model.addAttribute("privatemessage", new PrivateMessage());
 		return "messageform";
 	}
@@ -409,7 +419,7 @@ public class MainController {
 
 			privateMessageRepository.save(privateMessage);
 			model.addAttribute("course", course);
-			model.addAttribute("user", userRepository);
+			model.addAttribute("users", userRepository);
 			model.addAttribute("privateMessage", privateMessageRepository.findAllBySender(sender));
 			return "redirect:/mycourses";
 		}
@@ -417,10 +427,10 @@ public class MainController {
 	@RequestMapping("/messages")
 	public String GetMessages(Model model){
 		//Course course = courseRepository.findById(id).get();
-		User sender = userService.getCurrentUser();
-		model.addAttribute("sender", sender);
+		User receiver = userService.getCurrentUser();
+		model.addAttribute("receiver", receiver);
 		//model.addAttribute("course", course);
-		model.addAttribute("privatemessages",privateMessageRepository.findAllBySender(sender));
+		model.addAttribute("privatemessages",privateMessageRepository.findAllByReceiver(receiver));
 		return "inbox";
 	}
 }

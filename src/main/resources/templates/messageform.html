@@ -14,7 +14,7 @@
 
             <div class="form-group">
                 <label for="receiver">To</label>
-                <select name="receiver_id" id="receiver">
+                <select name="receiver_id" id="receiver" multiple="multiple">
                     <option th:each="user : ${users}"
                             th:text="${user.firstName}"
                             th:value="${user.id}">
