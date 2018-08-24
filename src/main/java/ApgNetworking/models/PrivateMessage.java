@@ -1,5 +1,7 @@
 package ApgNetworking.models;
 
+import org.springframework.web.bind.annotation.ModelAttribute;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
@@ -27,7 +29,7 @@ public class PrivateMessage {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "receiver_id")
-    private User receiver;
+    private  User receiver;
 
     public PrivateMessage() {
     }

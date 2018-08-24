@@ -8,18 +8,18 @@
     <div th:replace="base :: navlinks"></div>
 
     <div class="container">
-        <form method="post" action="#" th:action="@{/messageform}" th:object="${privatemessage}">
+        <form method="post" action="#" th:action="@{/messageform}" th:object="${privateMessage}">
             <input type="hidden" th:field="*{id}">
             <input type="hidden" th:value="${course_id}" name="course_id">
 
             <div class="form-group">
-                <label for="receiver">To</label>
-                <select name="receiver_id" id="receiver" multiple="multiple">
-                    <option th:each="user : ${users}"
-                            th:text="${user.firstName}"
-                            th:value="${user.id}">
-                </option>
-                </select>
+                <fieldset>
+                    <legend>Select Your Reciever</legend>
+                <div th:each="user : ${users}">
+                    <input type="checkbox"  th:value="${user.id}" name="receiver_id" />
+                    <label th:text="${user.firstName}"></label>
+                </div>
+                </fieldset>
             </div>
             <div class="form-group">
                 <label for="subject">Subject</label>
@@ -29,7 +29,7 @@
             <div class="form-group">
                 <label for="content">Content</label>
                 <textarea class="form-control" th:field="*{messageContent}"
-                          id="content"></textarea>
+                          id="content" name="message"></textarea>
                 <span class="text-danger border border-danger rounded" th:if="${#fields.hasErrors('messageContent')}" th:errors="*{messageContent}"></span>
             </div>
             <button type="submit" value="Submit" class="btn btn-primary"/>

@@ -18,10 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class MainController {
@@ -391,39 +388,64 @@ public class MainController {
 		model.addAttribute("posts", postRepository.findAllByCourse(course));
 		return "posts";
 	}
-
+	public ArrayList<PrivateMessage> messages;
 	@RequestMapping ("/newmessage/{id}")
-	public String GetmessageForm(@PathVariable("id") long id, Model model){
+	public String GetmessageForm(@PathVariable("id") long id,@ModelAttribute PrivateMessage privateMessage, Model model){
 		model.addAttribute("course_id", id);
 //		model.addAttribute("receiver_id", id);
 //		model.addAttribute("sender_id", id);
-		model.addAttribute("users", userRepository.findByRole(3));
+		model.addAttribute("users", userRepository.findByRole(2));
 		model.addAttribute("privatemessage", new PrivateMessage());
 		return "messageform";
 	}
 	@PostMapping("/messageform")
 	public String SendMessage(@Valid @ModelAttribute("privatemessage") PrivateMessage privateMessage,
 						  BindingResult result, Model model, HttpServletRequest request){
-		if (result.hasErrors()) {
-			return "messageform";
-		}
-		else {
-			Course course =
-					courseRepository.findById(new Long(request.getParameter(
-							"course_id"))).get();
-			User receiver = userRepository.findById(new Long(request.getParameter("receiver_id"))).get();
-			privateMessage.setCourse(course);
-			privateMessage.setReceiver(receiver);
-			User sender = userService.getCurrentUser();
-			privateMessage.setSender(sender);
+		if (request.getParameterValues("receiver_id") != null) {
+			String[] recieverFs = null;
+			recieverFs = request.getParameterValues("receiver_id");
+			//List<Long> list = new ArrayList<Long>();
+			List<Long> list = new ArrayList<Long>();
+			for(String recieverF : recieverFs) {
+				try {
+					list.add(Long.parseLong(recieverF.trim()));
+				} catch(Exception e) {
+					// log about conversion error
+				}
+				System.out.println(list);
+			}
 
-			privateMessageRepository.save(privateMessage);
-			model.addAttribute("course", course);
-			model.addAttribute("users", userRepository);
-			model.addAttribute("privateMessage", privateMessageRepository.findAllBySender(sender));
-			return "redirect:/mycourses";
+			for (int i = 0; i < list.size(); i++) {
+			 PrivateMessage pm = new PrivateMessage();
+
+				if (result.hasErrors()) {
+					return "messageform";
+				} else {
+
+					Course course =
+							courseRepository.findById(new Long(request.getParameter(
+									"course_id"))).get();
+					User receiver = userRepository.findById(list.get(i)).get();
+					pm.setCourse(course);
+					pm.setReceiver(receiver);
+					User sender = userService.getCurrentUser();
+					pm.setSender(sender);
+				    String message = privateMessage.getMessageContent();
+				    pm.setMessageContent(message);
+					String subject = privateMessage.getSubject();
+					pm.setSubject(subject);
+					privateMessageRepository.save(pm);
+					model.addAttribute("course", course);
+					model.addAttribute("users", userRepository);
+					model.addAttribute("privateMessage", privateMessageRepository.findAllBySender(sender));
+				}
+			}
 		}
+
+			return "redirect:/mycourses";
+
 	}
+
 	@RequestMapping("/messages")
 	public String GetMessages(Model model){
 		//Course course = courseRepository.findById(id).get();
