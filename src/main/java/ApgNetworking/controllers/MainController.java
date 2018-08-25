@@ -409,9 +409,9 @@ public class MainController {
 			for(String recieverF : recieverFs) {
 				try {
 					list.add(Long.parseLong(recieverF.trim()));
-				} catch(Exception e) {
-					// log about conversion error
-				}
+			} catch(Exception e) {
+				// log about conversion error
+			}
 				System.out.println(list);
 			}
 

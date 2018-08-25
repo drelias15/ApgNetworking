@@ -50,3 +50,10 @@ profile-img {
 h4 {
     margin-top: 30px;
 }
+
+.chosen-container {
+    width: 100% !important;
+}
+.chosen-container ul {
+    padding:5px !important;
+}
