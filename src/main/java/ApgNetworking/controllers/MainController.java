@@ -74,7 +74,7 @@ public class MainController {
 	@GetMapping("/register")
 	public String Registration(Model model) {
 		model.addAttribute("user", new User());
-        model.addAttribute("user", userService.getCurrentUser());
+       // model.addAttribute("user", userService.getCurrentUser());
 		return "userinfo";
 	}
 

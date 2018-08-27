@@ -43,9 +43,10 @@
                           id="content" name="message"></textarea>
                 <span class="text-danger border border-danger rounded" th:if="${#fields.hasErrors('messageContent')}" th:errors="*{messageContent}"></span>
             </div>
-            <button type="submit" value="Submit" class="btn btn-primary"/>
-            <button type="reset" value="Reset"
-                    class="btn btn-warning"/>
+            <div class="form-group">
+                <input type="submit" value="Submit" class="btn btn-primary"/>
+                <input type="reset" value="Reset" class="btn btn-warning"/>
+            </div>
         </form>
     </div>
 
