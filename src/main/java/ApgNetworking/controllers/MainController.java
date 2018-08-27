@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Controller
@@ -43,7 +44,9 @@ public class MainController {
 
 
 	@RequestMapping("/")
-	public String LoadIndex() {
+	public String LoadIndex(Model model) {
+        model.addAttribute("user", userService.getCurrentUser());
+
 		return"index";
 	}
 
@@ -64,12 +67,14 @@ public class MainController {
 	@RequestMapping("/users")
 	public String GetUsers(Model model) {
 		model.addAttribute("users", userRepository.findAll());
+        model.addAttribute("user", userService.getCurrentUser());
 		return "admin/users";
 	}
 
 	@GetMapping("/register")
 	public String Registration(Model model) {
 		model.addAttribute("user", new User());
+        model.addAttribute("user", userService.getCurrentUser());
 		return "userinfo";
 	}
 
@@ -139,13 +144,14 @@ public class MainController {
 		User user = userService.getCurrentUser();
 		model.addAttribute("user", user);
 		model.addAttribute("img_url", user.getPicUrl());
-		return "userinfo";
+		return "profile";
 	}
 
 	@RequestMapping ("/profile/{id}")
 	public String GetProfile(@PathVariable("id") long id, Model model){
 		model.addAttribute("user",
 				userRepository.findById(id).get());
+        model.addAttribute("user", userService.getCurrentUser());
 		return "profile";
 	}
 
@@ -153,6 +159,7 @@ public class MainController {
 	public String UpdateToAdminRole(@PathVariable("id") long id, Model model){
 		userService.SetNewRole("Admin", userRepository.findById(id).get());
 		model.addAttribute("users", userRepository.findAll());
+        model.addAttribute("user", userService.getCurrentUser());
 		return "admin/users";
 	}
 
@@ -161,6 +168,7 @@ public class MainController {
 									   Model model){
 		userService.SetNewRole("Instructor", userRepository.findById(id).get());
 		model.addAttribute("users", userRepository.findAll());
+        model.addAttribute("user", userService.getCurrentUser());
 		return "admin/users";
 	}
 
@@ -168,6 +176,7 @@ public class MainController {
 	public String UpdateToStudentRole(@PathVariable("id") long id, Model model){
 		userService.SetNewRole("Student", userRepository.findById(id).get());
 		model.addAttribute("users", userRepository.findAll());
+        model.addAttribute("user", userService.getCurrentUser());
 		return "admin/users";
 	}
 
@@ -178,6 +187,7 @@ public class MainController {
 	@GetMapping("/courseform")
 	public String GetCourseForm(Model model) {
 		model.addAttribute("course", new Course());
+        model.addAttribute("user", userService.getCurrentUser());
 		return "admin/courseform";
 	}
 
@@ -190,6 +200,7 @@ public class MainController {
 			course.setActive(true);
 			courseRepository.save(course);
 			model.addAttribute("courses", courseRepository.findAll());
+            model.addAttribute("user", userService.getCurrentUser());
 			return "courses";
 		}
 	}
@@ -200,6 +211,7 @@ public class MainController {
 				userService.GetAllCoursesByUser(userService.getCurrentUser()));
 		model.addAttribute("displayEnroll",false);
 		model.addAttribute("displayDrop",true);
+        model.addAttribute("user", userService.getCurrentUser());
 		return "courses";
 	}
 
@@ -223,6 +235,7 @@ public class MainController {
 		model.addAttribute("displayEnroll",true);
 		model.addAttribute("displayDrop",false);
 		model.addAttribute("courses", courses);
+        model.addAttribute("user", userService.getCurrentUser());
 		return "courses";
 	}
 
@@ -234,20 +247,33 @@ public class MainController {
 		UserCourse userCourse = new UserCourse(user,
 				userService.getCurrentRole(user), course);
 		userCourseRepository.save(userCourse);
-
+        model.addAttribute("user", userService.getCurrentUser());
 		return "redirect:/mycourses";
 	}
+    @RequestMapping("/dropcourse/{id}")
+    public String RemoveFromMyCourses(@PathVariable("id") long id, Model model) {
+        Course course = courseRepository.findById(id).get();
+        User user = userService.getCurrentUser();
+        Role role = userService.getCurrentRole(user);
+        UserCourse userCourse = userCourseRepository.findByCourseAndRoleAndUser(course,
+                role, user);
+        userCourseRepository.delete(userCourse);
+        model.addAttribute("user", userService.getCurrentUser());
 
+        return "redirect:/mycourses";
+    }
 	@RequestMapping("/currentCourses")
 	public String GetCurrentCourses(Model model) {
 
 		model.addAttribute("courses", getCourses("current"));
+        model.addAttribute("user", userService.getCurrentUser());
 		return "courses";
 	}
 
 	@RequestMapping("/pastCourses")
 	public String GetPastCourses(Model model) {
 		model.addAttribute("courses", getCourses("past"));
+        model.addAttribute("user", userService.getCurrentUser());
 		return "courses";
 	}
 
@@ -328,6 +354,7 @@ public class MainController {
 		model.addAttribute("course", course);
 		model.addAttribute("instructors", instructors);
 		model.addAttribute("students", students);
+        model.addAttribute("user", userService.getCurrentUser());
 
 		return "coursedetail";
 	}
@@ -337,6 +364,7 @@ public class MainController {
 		Course course = courseRepository.findById(id).get();
 		course.setActive(false);
 		courseRepository.save(course);
+        model.addAttribute("user", userService.getCurrentUser());
 		return "redirect:/enrollcourse";
 	}
 
@@ -345,6 +373,7 @@ public class MainController {
 		Course course = courseRepository.findById(id).get();
 		course.setActive(true);
 		courseRepository.save(course);
+        model.addAttribute("user", userService.getCurrentUser());
 		return "redirect:/enrollcourse";
 	}
 
@@ -356,6 +385,7 @@ public class MainController {
 	public String GetPostForm(@PathVariable("id") long id, Model model){
 		model.addAttribute("course_id", id);
 		model.addAttribute("post", new Post());
+        model.addAttribute("user", userService.getCurrentUser());
 		return "postform";
 	}
 
@@ -377,6 +407,7 @@ public class MainController {
 			postRepository.save(post);
 			model.addAttribute("course", course);
 			model.addAttribute("posts", postRepository.findAllByCourse(course));
+            model.addAttribute("user", userService.getCurrentUser());
 			return "posts";
 		}
 	}
@@ -386,6 +417,7 @@ public class MainController {
 		Course course = courseRepository.findById(id).get();
 		model.addAttribute("course", course);
 		model.addAttribute("posts", postRepository.findAllByCourse(course));
+        model.addAttribute("user", userService.getCurrentUser());
 		return "posts";
 	}
 	public ArrayList<PrivateMessage> messages;
@@ -395,6 +427,7 @@ public class MainController {
 //		model.addAttribute("receiver_id", id);
 //		model.addAttribute("sender_id", id);
 		model.addAttribute("users", userRepository.findByRole(2));
+        model.addAttribute("user", userService.getCurrentUser());
 		model.addAttribute("privatemessage", new PrivateMessage());
 		return "messageform";
 	}
@@ -430,6 +463,7 @@ public class MainController {
 					pm.setReceiver(receiver);
 					User sender = userService.getCurrentUser();
 					pm.setSender(sender);
+					pm.setDateSent(LocalDateTime.now());
 				    String message = privateMessage.getMessageContent();
 				    pm.setMessageContent(message);
 					String subject = privateMessage.getSubject();
@@ -437,6 +471,7 @@ public class MainController {
 					privateMessageRepository.save(pm);
 					model.addAttribute("course", course);
 					model.addAttribute("users", userRepository);
+                    model.addAttribute("user", userService.getCurrentUser());
 					model.addAttribute("privateMessage", privateMessageRepository.findAllBySender(sender));
 				}
 			}
@@ -452,7 +487,8 @@ public class MainController {
 		User receiver = userService.getCurrentUser();
 		model.addAttribute("receiver", receiver);
 		//model.addAttribute("course", course);
-		model.addAttribute("privatemessages",privateMessageRepository.findAllByReceiver(receiver));
+        model.addAttribute("user", userService.getCurrentUser());
+		model.addAttribute("privatemessages",privateMessageRepository.findAllBySender(receiver));
 		return "inbox";
 	}
 }

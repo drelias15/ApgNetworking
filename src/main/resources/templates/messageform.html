@@ -18,7 +18,8 @@
             <input type="hidden" th:value="${course_id}" name="course_id">
 
             <div class="form-group">
-                    <select name="receiver_id"  class="chosen-select" multiple/>
+                <label for="to">To</label>
+                    <select name="receiver_id"  class="chosen-select" multiple id="to"/>
                     <option th:each="user : ${users}"
                             th:text="${user.firstName}"
                             th:value="${user.id}">

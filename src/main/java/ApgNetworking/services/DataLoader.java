@@ -170,35 +170,35 @@ public class DataLoader implements CommandLineRunner{
         postRepository.save(post);
     }
 
-//    private void addMessages(){
-//        PrivateMessage privateMessage = new PrivateMessage("Hello World",
-//                LocalDateTime.now(),"Lorem ipsum dolor sit amet, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
-//        privateMessage.setCourse(courseRepository.findByCrn("10045"));
-//        privateMessage.setSender(userRepository.findByUsername("instructor"));
-//        privateMessage.setReceiver(userRepository.findByUsername("jj"));
-//        privateMessageRepository.save(privateMessage);
-//
-//        privateMessage = new PrivateMessage("",
-//                LocalDateTime.now(),"Lorem ipsum dolor sit amet, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
-//        privateMessage.setCourse(courseRepository.findByCrn("10045"));
-//        privateMessage.setSender(userRepository.findByUsername("jj"));
-//        privateMessage.setReceiver(userRepository.findByUsername("instructor"));
-//        privateMessageRepository.save(privateMessage);
-//
-//        privateMessage = new PrivateMessage("Hello from Melissa",
-//                LocalDateTime.now(),"Lorem ipsum dolor sit amet, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
-//        privateMessage.setCourse(courseRepository.findByCrn("10045"));
-//        privateMessage.setSender(userRepository.findByUsername("maf"));
-//        privateMessage.setReceiver(userRepository.findByUsername("jj"));
-//        privateMessageRepository.save(privateMessage);
-//
-//        privateMessage = new PrivateMessage("Hello from Bart",
-//                LocalDateTime.now(),"Lorem ipsum dolor sit amet, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
-//        privateMessage.setCourse(courseRepository.findByCrn("10045"));
-//        privateMessage.setSender(userRepository.findByUsername("bs"));
-//        privateMessage.setReceiver(userRepository.findByUsername("jj"));
-//        privateMessageRepository.save(privateMessage);
-//    }
+    private void addMessages(){
+        PrivateMessage privateMessage = new PrivateMessage("Hello World",
+                LocalDateTime.now(),"Lorem ipsum dolor sit amet, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
+        privateMessage.setCourse(courseRepository.findByCrn("10045"));
+        privateMessage.setSender(userRepository.findByUsername("instructor"));
+        privateMessage.setReceiver(userRepository.findByUsername("jj"));
+        privateMessageRepository.save(privateMessage);
+
+        privateMessage = new PrivateMessage("",
+                LocalDateTime.now(),"Lorem ipsum dolor sit amet, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
+        privateMessage.setCourse(courseRepository.findByCrn("10045"));
+        privateMessage.setSender(userRepository.findByUsername("jj"));
+        privateMessage.setReceiver(userRepository.findByUsername("instructor"));
+        privateMessageRepository.save(privateMessage);
+
+        privateMessage = new PrivateMessage("Hello from Melissa",
+                LocalDateTime.now(),"Lorem ipsum dolor sit amet, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
+        privateMessage.setCourse(courseRepository.findByCrn("10045"));
+        privateMessage.setSender(userRepository.findByUsername("maf"));
+        privateMessage.setReceiver(userRepository.findByUsername("jj"));
+        privateMessageRepository.save(privateMessage);
+
+        privateMessage = new PrivateMessage("Hello from Bart",
+                LocalDateTime.now(),"Lorem ipsum dolor sit amet, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
+        privateMessage.setCourse(courseRepository.findByCrn("10045"));
+        privateMessage.setSender(userRepository.findByUsername("bs"));
+        privateMessage.setReceiver(userRepository.findByUsername("jj"));
+        privateMessageRepository.save(privateMessage);
+    }
 
 
 }

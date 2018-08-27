@@ -8,30 +8,42 @@
     <div th:replace="base :: navlinks"></div>
 
     <div class="container">
-        <table class="table table-hover">
-            <tbody>
-            <tr th:each="privatemessage : ${privatemessages}">
-                <td>
-                    <div>
-                        <span th:text="${privatemessage.sender.firstName}"></span>
-                    </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-2">
+                    <table class="table table-hover">
+                        <tbody>
+                        <tr th:each="privatemessage : ${privatemessages}">
+                            <td>
+                                <div>
+                                    <span th:text="${privatemessage.sender.firstName}"></span>
+                                </div>
 
-                    <div>
-                        <span th:text="${privatemessage.messageContent}"></span>
-                    </div>
-                    <div>
-                        <img class="profile-thumbnail"
-                             th:src="${privatemessage.sender.picUrl}"
-                             alt="profile-thumbnail"/>
-                        <a class="card-link btn btn-warning"
-                           th:href="@{/profile/{id}(id=${privatemessage.sender.id})}"><span th:text="${privatemessage.sender.username}"></span></a>
-                        <span
-                                th:text="${#dates.format(privatemessage.dateSent, 'dd MMM yyyy')}"></span>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+                                <div>
+                                    <span th:text="${privatemessage.subject}"></span>
+                                </div>
+                                <div><span th:text="${privatemessage.sender.username}"></span></a></div>
+                                <!--<div>-->
+                                    <!--<img class="profile-thumbnail"-->
+                                         <!--th:src="${privatemessage.sender.picUrl}"-->
+                                         <!--alt="profile-thumbnail"/>-->
+                                    <!--<a class="card-link btn btn-warning"-->
+                                       <!--th:href="@{/profile/{id}(id=${privatemessage.sender.id})}"><span th:text="${privatemessage.sender.username}"></span></a>-->
+                                    <!--<span-->
+                                            <!--th:text="${#dates.format(privatemessage.dateSent, 'dd MMM yyyy')}"></span>-->
+                                <!--</div>-->
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-10">
+                    <h1>Welcome to the America's Promise Grant Networking Site </h1>
+                    <h3>This site allows you to connect with students who have taken courses here</h3>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <div th:replace="base ::footer"></div>
