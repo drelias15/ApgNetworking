@@ -421,13 +421,27 @@ public class MainController {
 		return "posts";
 	}
 	public ArrayList<PrivateMessage> messages;
-	@RequestMapping ("/newmessage/{id}")
-	public String GetmessageForm(@PathVariable("id") long id,@ModelAttribute PrivateMessage privateMessage, Model model){
+	@RequestMapping ("/newmessageadmin/{id}")
+	public String GetmessageFormAdmin(@PathVariable("id") long id,@ModelAttribute PrivateMessage privateMessage, Model model){
 		model.addAttribute("course_id", id);
-//		model.addAttribute("receiver_id", id);
-//		model.addAttribute("sender_id", id);
-		model.addAttribute("users", userRepository.findByRole(2));
+		model.addAttribute("users", userRepository.findAll());
         model.addAttribute("user", userService.getCurrentUser());
+		model.addAttribute("privatemessage", new PrivateMessage());
+		return "messageform";
+	}
+	@RequestMapping ("/newmessageinstructor/{id}")
+	public String GetmessageFormInstructor(@PathVariable("id") long id,@ModelAttribute PrivateMessage privateMessage, Model model){
+		model.addAttribute("course_id", id);
+		model.addAttribute("users", userRepository.findByRole(2));
+		model.addAttribute("user", userService.getCurrentUser());
+		model.addAttribute("privatemessage", new PrivateMessage());
+		return "messageform";
+	}
+	@RequestMapping ("/newmessagestudent/{id}")
+	public String GetmessageFormStudent(@PathVariable("id") long id,@ModelAttribute PrivateMessage privateMessage, Model model){
+		model.addAttribute("course_id", id);
+		model.addAttribute("users", userRepository.findByRole(3));
+		model.addAttribute("user", userService.getCurrentUser());
 		model.addAttribute("privatemessage", new PrivateMessage());
 		return "messageform";
 	}
@@ -437,7 +451,6 @@ public class MainController {
 		if (request.getParameterValues("receiver_id") != null) {
 			String[] recieverFs = null;
 			recieverFs = request.getParameterValues("receiver_id");
-			//List<Long> list = new ArrayList<Long>();
 			List<Long> list = new ArrayList<Long>();
 			for(String recieverF : recieverFs) {
 				try {
@@ -487,8 +500,9 @@ public class MainController {
 		User receiver = userService.getCurrentUser();
 		model.addAttribute("receiver", receiver);
 		//model.addAttribute("course", course);
+        model.addAttribute("users", userRepository);
         model.addAttribute("user", userService.getCurrentUser());
-		model.addAttribute("privatemessages",privateMessageRepository.findAllBySender(receiver));
+		model.addAttribute("privatemessages",privateMessageRepository.findAllByReceiver(receiver));
 		return "inbox";
 	}
 }

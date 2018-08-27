@@ -16,7 +16,7 @@ public class PrivateMessage {
     private String subject;
     private LocalDateTime dateSent;
 
-    @Size(min=3, max=140)
+    @Size(min=3)
     private String messageContent;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -34,7 +34,7 @@ public class PrivateMessage {
     public PrivateMessage() {
     }
 
-    public PrivateMessage(String subject, LocalDateTime dateSent, @Size(min = 3, max = 140) String messageContent) {
+    public PrivateMessage(String subject, LocalDateTime dateSent, @Size(min = 3) String messageContent) {
         this.subject = subject;
         this.dateSent = dateSent;
         this.messageContent = messageContent;

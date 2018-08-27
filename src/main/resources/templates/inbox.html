@@ -7,44 +7,27 @@
 <body>
     <div th:replace="base :: navlinks"></div>
 
-    <div class="container">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-2">
-                    <table class="table table-hover">
-                        <tbody>
-                        <tr th:each="privatemessage : ${privatemessages}">
-                            <td>
-                                <div>
-                                    <span th:text="${privatemessage.sender.firstName}"></span>
-                                </div>
-
-                                <div>
-                                    <span th:text="${privatemessage.subject}"></span>
-                                </div>
-                                <div><span th:text="${privatemessage.sender.username}"></span></a></div>
-                                <!--<div>-->
-                                    <!--<img class="profile-thumbnail"-->
-                                         <!--th:src="${privatemessage.sender.picUrl}"-->
-                                         <!--alt="profile-thumbnail"/>-->
-                                    <!--<a class="card-link btn btn-warning"-->
-                                       <!--th:href="@{/profile/{id}(id=${privatemessage.sender.id})}"><span th:text="${privatemessage.sender.username}"></span></a>-->
-                                    <!--<span-->
-                                            <!--th:text="${#dates.format(privatemessage.dateSent, 'dd MMM yyyy')}"></span>-->
-                                <!--</div>-->
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                <div class="container">
+                <div class="col-md-3">
                 </div>
-                <div class="col-md-10">
-                    <h1>Welcome to the America's Promise Grant Networking Site </h1>
-                    <h3>This site allows you to connect with students who have taken courses here</h3>
+                </div>
+                <div class="col-md-9">
+                    <div class="container" th:each="privatemessage : ${privatemessages}">
+                        <th:h2>[[${privatemessage.sender.firstName}]]</th:h2>
+                        <th:div class="card">
+                            <th:div class="card-header">[[${privatemessage.subject}]]</th:div>
+                            <th:div class="card-body">[[${privatemessage.messageContent}]]</th:div>
+                            <th:div class="card-footer">[[${#temporals.format(privatemessage.dateSent)}]]</th:div>
+                            <a th:href="@{/coursedetail/{id}(id=${privatemessage.course.id})}" class="btn btn-primary btn-sm">Go To Course</a>
+                        </th:div>
+                    </div>
                 </div>
             </div>
         </div>
 
-    </div>
+
 
     <div th:replace="base ::footer"></div>
 </body>

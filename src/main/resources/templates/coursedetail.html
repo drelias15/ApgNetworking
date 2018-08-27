@@ -12,6 +12,12 @@
             <h3 th:text="${course.crn + ' ' + course.name}"></h3>
             <strong>Semester: </strong><span th:text="${course.semester}"></span>
             <p><strong>Course Description: </strong><span th:text="${course.description}"></span></p>
+            <p><a class="card-link btn btn-warning"
+                  th:href="@{/newmessageadmin/{id}(id=${course.id})}" sec:authorize="hasAuthority('Admin')">Send a Message</a></p>
+            <p><a class="card-link btn btn-warning"
+                  th:href="@{/newmessageinstructor/{id}(id=${course.id})}" sec:authorize="hasAuthority('Instructor')">Send a Message</a></p>
+            <p><a class="card-link btn btn-warning"
+                  th:href="@{/newmessagestudent/{id}(id=${course.id})}" sec:authorize="hasAuthority('Student')">Send a Message</a></p>
 
             <!--List Instructors-->
             <h4>Instructors</h4>
@@ -57,8 +63,7 @@
             <p>
             <a class="card-link btn btn-warning"
                th:href="@{/newpost/{id}(id=${course.id})}">Add New Post</a>
-                <a class="card-link btn btn-warning"
-                   th:href="@{/newmessage/{id}(id=${course.id})}">Send a Message</a>
+
             </p>
 
             <!--Posts Preview-->
