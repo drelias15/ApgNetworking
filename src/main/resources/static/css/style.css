@@ -60,3 +60,6 @@ h4 {
 .form-control{
   box-shadow:  0 14px 8px -6px #3c2323;
 }
+.nav a{
+    font-size: 16px !important;
+}

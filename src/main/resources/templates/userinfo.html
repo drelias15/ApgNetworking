@@ -45,7 +45,7 @@
 
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="text" class="form-control" th:field="*{password}"
+                <input type="password" class="form-control" th:field="*{password}"
                        id="password">
                 <span class="text-danger border border-danger rounded" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
             </div>
